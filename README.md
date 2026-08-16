@@ -22,9 +22,8 @@
   
 --------------------------------------------
 
-# Semestre:
-- II
-  
+# Semestre e ano:
+- II        2026
 --------------------------------------------
 # Professora Orientadora:
 - Renata Arantes
