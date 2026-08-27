@@ -1,11 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Acompanhamento de demandas de desenvolvimento</title>
+
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/layout.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
     </head>
+
     <body>
-        
+        <div id="topbar"></div>
+        <div class="layout">
+            <div id="menu"></div>
+            
+            <!-- Conteudo do Dashboard -->
+            <div class="main">
+                <div class="content">
+                    <!-- Cabeçalho do dashboard -->
+                    <div class="cabecalho-div">
+                        <div>
+                            <h1>Visão geral</h1>
+                            <p>26/08 a 08/09 · 4 demandas ativas</p>
+                        </div>
+
+                        <div class="div-actions">
+                            <button>7 dias</button>
+                            <button class="selected">30 dias</button>
+                            <button>90 dias</button>
+                        </div>
+                    </div>
+
+                    <!-- Conteudo do dashboard -> cards/tabelas/gráficos -->
+                    <div class="cards">
+                        <div class="card">
+                            <span class="card-title">DEMANDAS ABERTAS</span>
+                            <div class="card-number">
+                                68
+                                <span class="positive">↗ 8%</span>
+                            </div>
+                            <p>12 entraram nesta semana</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-title">EM DESENVOLVIMENTO</span>
+                            <div class="card-number">
+                                21
+                                <span class="positive">↗ 4%</span>
+                            </div>
+                            <p>capacidade da demanda em 84%</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-title">LEAD TIME MÉDIO</span>
+                            <div class="card-number">
+                                11,4
+                                <small>dias</small>
+                                <span class="positive">↘ 14%</span>
+                            </div>
+                            <p>redução de 1,8 dia no mês</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-title">ADERÊNCIA</span>
+                            <div class="card-number">
+                                92,6
+                                <small>%</small>
+                                <span class="positive">↗ 3%</span>
+                            </div>
+                            <p>5 demandas fora do prazo</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="panel flow-panel">
+                            <div class="panel-div">
+                                <div>
+                                    <h2>Fluxo de demandas</h2>
+                                    <p>Comparativo semanal entre demandas abertas e entregues</p>
+                                </div>
+                                <button class="period">Últimas 8 semanas</button>
+                            </div>
+                            <small>Área separada para gráfico</small>
+                        </div>
+                        <div class="panel distribution">
+                            <div class="panel-div">
+                                <div>
+                                    <h2>Distribuição por etapa</h2>
+                                    <p>71 demandas em andamento no momento</p>
+                                </div>
+                            </div>
+                            <small>Área separada para gráfico</small>
+                        </div>
+                    </div>
+
+                    <div class="panel demands">
+                        <div class="panel-div">
+                            <div>
+                                <h2>Demandas recentes</h2>
+                                <p>Últimas demandas cadastradas no sistema</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Responsável</th>
+                                    <th>Status</th>
+                                    <th>Prioridade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#01</td>
+                                    <td>Implementar tela de login</td>
+                                    <td>João Silva</td>
+                                    <td>
+                                        <span class="status development-status">Desenvolvimento</span>
+                                    </td>
+                                    <td>
+                                        <span class="priority high">Alta</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#02</td>
+                                    <td>Correção no cadastro de clientes</td>
+                                    <td>Maria Santos</td>
+                                    <td>
+                                        <span class="status analysis-status">Em análise</span>
+                                    </td>
+                                    <td>
+                                        <span class="priority medium">Média</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#03</td>
+                                    <td>Melhoria no relatório financeiro</td>
+                                    <td>Lucas Oliveira</td>
+                                    <td>
+                                        <span class="status review-status">Em revisão</span>
+                                    </td>
+                                    <td>
+                                        <span class="priority low">Baixa</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
