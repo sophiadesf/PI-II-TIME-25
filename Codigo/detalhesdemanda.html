@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Demandas</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/layout.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+
+        <!-- Tipografia definida - Inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    </head>
+<body>
+    <div id="topbar"></div>
+        <div class="layout">
+            <div id="menu"></div>
+    <div class="main-dd">
+        <div class="cabecalho-dd">
+
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="listademandas.html">Demandas</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+            </ol>
+            </nav>
+
+            <h3>Detalhes de Demanda</h3>
+            
+        </div>
+        
+        <div class="container-tabela-dd">
+            <table class="tabela-dd">
+                
+                <tbody>
+                <tr>
+                    <td class="col-campo">Título</td>
+                    <td class="col-valor">João Silva</td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Tipo</td>
+                    <td class="col-valor">Implementar tela de login</td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Prioridade</td>
+                    <td class="col-valor priority high">Alta</td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Status</td>
+                    <td class="col-valor"><span class="development-status">Desenvolvimento</span></td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Projeto</td>
+                    <td class="col-valor">----</td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Responsável</td>
+                    <td class="col-valor">João Silva</td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Data de criação</td>
+                    <td class="col-valor">01/10/2026</td>
+                </tr>
+                <tr>
+                    <td class="col-campo">Prazo de finalização</td>
+                    <td class="col-valor">31/12/2026</td>
+                </tr>
+                </tbody>
+            </table>
+            
+            <div class="acoes-dd">
+                <button type="button" id="botao-pri" class="btn btn-primary btn-sm">Editar demanda</button>
+                <button type="button" id="botao-sec" class="btn btn-secondary btn-sm">Alterar status</button>
+            </div>
+            
+        </div>
+        
+        
+    </div>
+    
+    
+    
+    
+    
+</body>
+</html>

@@ -422,3 +422,80 @@ td {
     margin-left: 70px;
     padding: 7px;
 }
+.main-dd{
+    display: flex;
+    flex-direction: column;
+    margin: 28px 20px;
+    hr{
+        width: 100%;
+        
+    }
+}
+.cabecalho-dd{
+    width: 100%;  
+}
+
+.container-tabela-dd {
+  width: 100%;
+  clear: both;
+  display: flex;
+  flex-direction: row;
+}
+
+.tabela-dd {
+    width: 150%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    margin: 50px 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid rgba(60, 111, 155, 0.65);
+}
+
+.tabela-dd td,
+.tabela-dd th {
+    padding: 15px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(60, 111, 155, 0.65);
+    border-right: 1px solid rgba(60, 111, 155, 0.65);
+}
+
+
+.col-campo {
+  width: 35%;
+  font-weight: bold;
+}
+
+.col-valor {
+  width: 65%;
+  
+  span{
+    padding: 4px 10px;
+    border-radius: 18px;
+    font-weight: bold;
+    
+  }
+
+}
+
+.acoes-dd{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    margin-left: 20px;
+    margin-top: 50px;
+
+    
+}
+
+#botao-pri{
+    background-color:rgba(60, 111, 155);;
+    border: 0px;
+}
+
+#botao-sec{
+    background-color: white;
+    color: black;
+}
