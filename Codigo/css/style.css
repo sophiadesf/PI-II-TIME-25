@@ -422,3 +422,13 @@ td {
     margin-left: 70px;
     padding: 7px;
 }
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item-form{
+    width: 700px;
+}
