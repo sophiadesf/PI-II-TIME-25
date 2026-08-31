@@ -447,10 +447,11 @@ td {
     border-collapse: separate;
     border-spacing: 0;
     text-align: left;
-    margin: 50px 20px;
+    margin: 90px 20px;
     border-radius: 12px;
     overflow: hidden;
     border: 3px solid rgba(60, 111, 155, 0.65);
+    box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2);
 }
 
 .tabela-dd td,
@@ -484,8 +485,8 @@ td {
     flex-direction: column;
     gap: 10px;
     width: 300px;
-    margin-left: 20px;
-    margin-top: 50px;
+    margin-left: 50px;
+    margin-top: 90px;
 
     
 }
