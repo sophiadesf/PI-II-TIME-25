@@ -18,30 +18,75 @@
     <div id="topbar"></div>
     <div class="layout">
         <div id="menu"></div>
-
         <div class="container">
+            <h2>Cadastro de Demandas</h2>
+
             <div class="item-form">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Selecione...</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <label for="exampleFormControlInput1" class="form-label">Título</label>
+                <input class="form-control" type="text" aria-label="default input example">
             </div>
-            
+
             <div class="item-form">
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                </div>
-            </div>
-            <div class="item-form">
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                    <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
             </div>
-            
+                
+            <div class="item-form">
+                <label for="exampleFormControlInput1" class="form-label">Tipo</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Selecione...</option>
+                    <option value="1">Tarefa</option>
+                    <option value="2">Defeito</option>
+                    <option value="3">Melhoria</option>
+                    <option value="4">Documentação</option>
+                </select>
+            </div>
+
+            <div class="item-form">
+                <label for="exampleFormControlInput1" class="form-label">Prioridade</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Selecione...</option>
+                    <option value="1">Crítica</option>
+                    <option value="2">Alta</option>
+                    <option value="3">Média</option>
+                    <option value="4">Baixa</option>
+                </select>
+            </div>
+
+            <div class="item-form">
+                <label for="exampleFormControlInput1" class="form-label">Projeto Associado</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Selecione...</option>
+                    <option value="1">Projeto 1</option>
+                    <option value="2">Projeto 2</option>
+                    <option value="3">Projeto 3</option>
+                </select>
+            </div>
+
+            <div class="item-form">
+                <label for="exampleFormControlInput1" class="form-label">Responsável</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Selecione...</option>
+                    <option value="1">Responsável 1</option>
+                    <option value="2">Responsável 2</option>
+                    <option value="3">Responsável 3</option>
+                </select>
+            </div>
+
+            <div class="item-form">
+                <div class="mb-3">
+                    <label for="data" class="form-label">Prazo de Finalização</label>
+                    <input type="date" class="form-control" id="data" name="data">
+                </div>
+            </div>
+
+            <div class="item-form">
+                <div class="botoes">
+                    <button type="button" class="btn btn-primary btn-sm">Salvar</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
