@@ -459,11 +459,21 @@ td {
     display: flex;
     flex-direction: row;
     justify-content: right;
-    gap: 10px;
 }
 
 .botoes button{
     font-size: 15px;
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.container h2{
+    text-align: center;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
 }
