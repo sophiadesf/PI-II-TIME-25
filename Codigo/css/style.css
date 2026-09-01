@@ -386,52 +386,68 @@ td {
 
 .cabecalho-ld {
     margin: 28px 20px;
+    display: flex;
+    justify-content: space-between;
 
     p {
         color: grey;
     }
 }
 
+.filtro {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+
+    background-color: #f2f2f2 ;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
 .listagem {
     background-color: white;
     display: flex;
-    width: 1070px;
+    flex-wrap: wrap;
+    justify-content: center;
     margin: 10px;
+    gap: 25px;
 }
 
 .card-ld {
     display: flex;
-    background-color: white ;
+    flex-wrap: wrap;
+    justify-content: space-between;
     width: 330px;
-    height: 220px;
+    padding: 15px;
+
+    background-color: white ;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin: auto;
-    margin-bottom: 10px;
+    border-radius: 10px;
 }
 
 .detalhes-ld {
-    display: flex;
+    width: 30px;
+    height: 30px ;
     text-align: center;
-    height: 40px;
+
     background-color: #f2f2f2;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 85px;
-    margin-left: 70px;
-    padding: 7px;
 }
 
-.container{
+/*  */
+.main-dd{
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 25px;
 }
 
-.container h2{
-    text-align: center;
+.container-tabela-dd {
+  width: 100%;
+  clear: both;
+  display: flex;
+  flex-direction: row;
 }
 
 .item-form{
