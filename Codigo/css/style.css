@@ -425,6 +425,7 @@ td {
 
 .container{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     gap: 25px;
 }
@@ -435,4 +436,18 @@ td {
 
 .item-form{
     width: 430px;
+    margin-left: 420px;
+}
+
+.botoes{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: 10px;
+}
+
+.botoes button{
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
