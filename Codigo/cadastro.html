@@ -5,41 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Criar Conta</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/layout.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+
+  <!-- Tipografia definida - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <div class="card">
-    <h2>Criar Conta</h2>
-    <p class="subtitle">Preencha os dados abaixo para se cadastrar</p>
-    
-    <form>
-      <div class="form-group">
-        <label for="name">Nome Completo</label>
-        <input type="text" id="name" placeholder="Seu nome" required>
-      </div>
-
-      <div class="form-group">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
-      </div>
+  <div id="topbar"></div>
+  <div class="mt-5 pt-5">
+    <div class="card m-3">
+      <h2>Criar Conta</h2>
+      <p class="subtitle">Preencha os dados abaixo para se cadastrar</p>
       
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="••••••••" required>
+      <form>
+        <div class="form-group">
+          <label for="name">Nome Completo</label>
+          <input type="text" id="name" placeholder="Seu nome" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn">Cadastrar</button>
+      </form>
+
+      <div class="actions" style="justify-content: center;">
+        <span>Já tem uma conta?&nbsp;</span>
+        <a href="login.html">Fazer Login</a>
       </div>
 
-      <button type="submit" class="btn">Cadastrar</button>
-    </form>
-
-    <div class="actions" style="justify-content: center;">
-      <span>Já tem uma conta?&nbsp;</span>
-      <a href="index.html">Fazer Login</a>
-    </div>
-
-    <div class="back-link-container">
-      <a href="index.html" class="back-link">← Página inicial</a>
+      <div class="back-link-container">
+        <a href="login.html" class="back-link">← Página inicial</a>
+      </div>
     </div>
   </div>
-
 </body>
 </html>

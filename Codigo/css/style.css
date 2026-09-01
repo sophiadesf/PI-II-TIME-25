@@ -248,31 +248,6 @@ body {
     font-weight: bold;
 }
 
-.card-number {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 9px 0;
-    font-size: 29px;
-    font-weight: bold;
-    color: #182632;
-}
-
-.card-number small {
-    font-size: 14px;
-    color: #66727b;
-    font-weight: normal;
-}
-
-.positive {
-    font-size: 10px;
-    font-weight: bold;
-    color: #31856d;
-    background-color: #e8f4ef;
-    padding: 5px 7px;
-    border-radius: 6px;
-}
-
 .card p {
     color: #879199;
     font-size: 11px;
