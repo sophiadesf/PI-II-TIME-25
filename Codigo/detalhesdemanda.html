@@ -20,34 +20,32 @@
         <div class="layout">
             <div id="menu"></div>
             <div class="main-dd">
-                <div class="cabecalho-dd">
-
-                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="listademandas.html">Demandas</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
-                    </ol>
-                    </nav>
-
-                    <h3>Detalhes de Demanda</h3>
-                    
-                </div>
+            <div class="cabecalho-dd">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="listademandas.html">Demandas</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+                </ol>
+                </nav>
+                <h3>Detalhes de Demanda</h3>
+            </div>
+            
+            <div class="dashboard-grid-dd">
                 
-                <div class="container-tabela-dd">
+                <div class="card-detalhes">
                     <table class="tabela-dd">
-                        
                         <tbody>
                         <tr>
                             <td class="col-campo">Título</td>
-                            <td class="col-valor">João Silva</td>
+                            <td class="col-valor">Criação de API de Autenticação</td>
                         </tr>
                         <tr>
                             <td class="col-campo">Tipo</td>
-                            <td class="col-valor">Implementar tela de login</td>
+                            <td class="col-valor">Nova Funcionalidade</td>
                         </tr>
                         <tr>
                             <td class="col-campo">Prioridade</td>
-                            <td class="col-valor priority high">Alta</td>
+                            <td class="col-valor"><span class="tag-prioridade high">Alta</span></td>
                         </tr>
                         <tr>
                             <td class="col-campo">Status</td>
@@ -55,7 +53,7 @@
                         </tr>
                         <tr>
                             <td class="col-campo">Projeto</td>
-                            <td class="col-valor">----</td>
+                            <td class="col-valor">Portal do Cliente</td>
                         </tr>
                         <tr>
                             <td class="col-campo">Responsável</td>
@@ -72,16 +70,27 @@
                         </tbody>
                     </table>
                     
-                    <div class="acoes-dd">
-                        <button type="button" id="botao-pri" class="btn btn-primary btn-sm shadow-sm">Editar demanda</button>
+                    <div class="acoes-tabela">
                         <button type="button" id="botao-sec" class="btn btn-secondary btn-sm shadow-sm">Alterar status</button>
+                        <button type="button" id="botao-pri" class="btn btn-primary btn-sm shadow-sm">Editar demanda</button>
                     </div>
-                    
                 </div>
-                
-                
+
+                <div class="card-historico">
+                    <h4>Histórico de Alterações</h4>
+                    <div class="historico-timeline">
+                        <div class="historico-item">
+                            <span class="historico-data">05/10/2026 - 14:30</span>
+                            <p>Status alterado de <strong>Análise</strong> para <strong>Desenvolvimento</strong>.</p>
+                        </div>
+                        <div class="historico-item">
+                            <span class="historico-data">01/10/2026 - 09:00</span>
+                            <p>Demanda criada por <strong>João Silva</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-    
         </div>
     
     </body>
