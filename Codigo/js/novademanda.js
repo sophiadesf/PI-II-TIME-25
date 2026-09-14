@@ -1,3 +1,9 @@
+/**
+ * Js para validação do formulário de Cadastro de Demandas
+ * 
+ * Autor: Pedro Tafner
+ * 
+ */
 const formulario = document.querySelector("#formDemanda");
 
 const campoTitulo = document.querySelector("#titulo");
