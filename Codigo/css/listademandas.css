@@ -61,7 +61,7 @@
     align-items: center;
     justify-content: center;
     height: 35px;
-    width: 10px;
+width: 100%;
     gap: 2%;
 
     border: 1px solid #ccc;
