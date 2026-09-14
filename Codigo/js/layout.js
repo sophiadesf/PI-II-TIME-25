@@ -1,3 +1,4 @@
+// AUTORIA: Sophia D B Lopes
 fetch("topbar.html")
     .then(response => response.text())
     .then(data => {
