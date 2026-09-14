@@ -357,59 +357,6 @@ td {
     color: #47836d;
 }
 
-/* CSS - PÁGINA DE LISTAGEM DE DEMANDAS */
-
-.cabecalho-ld {
-    margin: 28px 20px;
-    display: flex;
-    justify-content: space-between;
-
-    p {
-        color: grey;
-    }
-}
-
-.filtro {
-    width: 35px;
-    height: 35px;
-    text-align: center;
-
-    background-color: #f2f2f2 ;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-.listagem {
-    background-color: white;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 10px;
-    gap: 25px;
-}
-
-.card-ld {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 330px;
-    padding: 15px;
-
-    background-color: white ;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-.detalhes-ld {
-    width: 30px;
-    height: 30px ;
-    text-align: center;
-
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 /* Detalhes de Demandas- Arthur Paioli */
 .main-dd {
     display: flex;
