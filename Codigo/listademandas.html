@@ -1,3 +1,5 @@
+<!-- Lista de Demandas - João Felipe Bodo Pinheiro -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
@@ -5,8 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>Demandas</title>
+
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/layout.js"></script>
+        <link rel="stylesheet" href="css/listademandas.css">
+
+        <script src="js/layout.js" defer></script>
+        <script src="js/listademandas.js" defer></script>
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
 
@@ -22,155 +29,277 @@
             <div id="menu"></div>
 
             <!-- Conteudo da Lista de Demandas -->
-            <div class="main">
+            <div class="main-ld">
+
                 <div class="cabecalho-ld">
                     <div>
                         <h3>Lista de Demandas</h3>
                         <p>x demandas estão cadastradas.</p>
                     </div>
-                    <div class="filtro">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
-                            <path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/>
-                        </svg>
-                    </div>
-                </div>
 
-                <hr>
-
-                <div>
                     <br>
-                    <div class="listagem">
-                        <div class="card-ld">
+
+                    <div class="pesquisa">
+                        <input id="pesquisa" class="form-control" type="text"
+                        required placeholder="Pesquisa">
+                    </div>
+
+                    <hr>
+                    <br>
+
+                    <div class="filtro dropstart"> 
+                        
+                        <ul class="dropdown-menu d-flex row p-2 rounded-3 shadow length-300px">
+                            <p>Status</p>
+                            <div>
+                                <input id="fs-aberta" class="form-check-input" type="checkbox">
+                                <label for="fs-aberta" class="form-check-label">
+                                    Aberta
+                                </label>
+                            </div>
                             
                             <div>
-                                <h3>Título</h3>
-                                <p>Descrição</p>
-                                <ul>
-                                    <li>Tipo</li>
-                                    <li>Prioridade</li>
-                                    <li>Responsável</li>
-                                    <li>Status</li>
-                                </ul>
+                                <input id="fs-andamento" class="form-check-input" type="checkbox">
+                                <label for="fs-andamento" class="form-check-label">
+                                    Em andamento
+                                </label>
                             </div>
 
-                    
-                            <a href="detalhesdemanda.html" class="detalhes-ld">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            <div>
+                                <input id="fs-revisao" class="form-check-input" type="checkbox">
+                                <label for="fs-revisao" class="form-check-label">
+                                   Em revisão
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="fs-concluida" class="form-check-input" type="checkbox">
+                                <label for="fs-concluida" class="form-check-label">
+                                   Concluída
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="fs-cancelada" class="form-check-input" type="checkbox">
+                                <label for="fs-cancelada" class="form-check-label">
+                                   Cancelada
+                                </label>
+                            </div>
+
+                            <div><br></div>
+
+                            <p>Prioridade</p>
+                            
+                            <div>
+                                <input id="fp-critica" class="form-check-input" type="checkbox">
+                                <label for="fp-critica" class="form-check-label">
+                                   Crítica
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="fp-alta" class="form-check-input" type="checkbox">
+                                <label for="fp-alta" class="form-check-label">
+                                   Alta
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="fp-media" class="form-check-input" type="checkbox">
+                                <label for="fp-media" class="form-check-label">
+                                   Média
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="fp-baixa" class="form-check-input" type="checkbox">
+                                <label for="fp-baixa" class="form-check-label">
+                                   Baixa
+                                </label>
+                            </div>
+
+                            <div><br></div>
+                            
+                            <p>Tipo</p>
+
+                            <div>
+                                <input id="ft-tarefa" class="form-check-input" type="checkbox">
+                                <label for="ft-tarefa" class="form-check-label">
+                                   Tarefa
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="ft-defeito" class="form-check-input" type="checkbox">
+                                <label for="ft-defeito" class="form-check-label">
+                                   Defeito
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="ft-melhoria" class="form-check-input" type="checkbox">
+                                <label for="ft-melhoria" class="form-check-label">
+                                   Melhoria
+                                </label>
+                            </div>
+
+                            <div>
+                                <input id="ft-documentacao" class="form-check-input" type="checkbox">
+                                <label for="ft-documentacao" class="form-check-label">
+                                   Documentação
+                                </label>
+                            </div>
+                            
+                            <div><br></div>
+
+                            <button class="btn-filtro" id="btn-filtro" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
+                                    <path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/>
                                 </svg>
-                            </a>
-    
+                                Filtrar
+                            </button>
+
+                        </ul>
+                    </div>
+                </div>  
+            </div>
+
+            <div style="border-left: 2px solid #ccc; height: auto; width: 111px; margin: 0 auto;"></div>
+
+
+            <div>
+                <br>
+                <div class="listagem">
+                    <div class="card-ld shadow">
+                        
+                        <div>
+                            <h3>Título</h3>
+                            <p>Descrição</p>
+                            <ul>
+                                <li>Tipo</li>
+                                <li>Prioridade</li>
+                                <li>Responsável</li>
+                                <li>Status</li>
+                            </ul>
                         </div>
 
-                        <div class="card-ld">
-                            
-                            <div>
-                                <h3>Título</h3>
-                                <p>Descrição</p>
-                                <ul>
-                                    <li>Tipo</li>
-                                    <li>Prioridade</li>
-                                    <li>Responsável</li>
-                                    <li>Status</li>
-                                </ul>
-                            </div>
+                
+                        <a href="detalhesdemanda.html" class="detalhes-ld">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            </svg>
+                        </a>
 
-                    
-                            <a href="detalhesdemanda.html" class="detalhes-ld">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-    
+                    </div>
+
+                    <div class="card-ld shadow">
+                        
+                        <div>
+                            <h3>Título</h3>
+                            <p>Descrição</p>
+                            <ul>
+                                <li>Tipo</li>
+                                <li>Prioridade</li>
+                                <li>Responsável</li>
+                                <li>Status</li>
+                            </ul>
                         </div>
 
-                        <div class="card-ld">
-                            
-                            <div>
-                                <h3>Título</h3>
-                                <p>Descrição</p>
-                                <ul>
-                                    <li>Tipo</li>
-                                    <li>Prioridade</li>
-                                    <li>Responsável</li>
-                                    <li>Status</li>
-                                </ul>
-                            </div>
+                
+                        <a href="detalhesdemanda.html" class="detalhes-ld">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            </svg>
+                        </a>
 
-                    
-                            <a href="detalhesdemanda.html" class="detalhes-ld">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-    
-                        </div>  
-                    
-                        <div class="card-ld">
-                            
-                            <div>
-                                <h3>Título</h3>
-                                <p>Descrição</p>
-                                <ul>
-                                    <li>Tipo</li>
-                                    <li>Prioridade</li>
-                                    <li>Responsável</li>
-                                    <li>Status</li>
-                                </ul>
-                            </div>
+                    </div>
 
-                    
-                            <a href="detalhesdemanda.html" class="detalhes-ld">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-    
+                    <div class="card-ld shadow">
+                        
+                        <div>
+                            <h3>Título</h3>
+                            <p>Descrição</p>
+                            <ul>
+                                <li>Tipo</li>
+                                <li>Prioridade</li>
+                                <li>Responsável</li>
+                                <li>Status</li>
+                            </ul>
                         </div>
 
-                        <div class="card-ld">
-                            
-                            <div>
-                                <h3>Título</h3>
-                                <p>Descrição</p>
-                                <ul>
-                                    <li>Tipo</li>
-                                    <li>Prioridade</li>
-                                    <li>Responsável</li>
-                                    <li>Status</li>
-                                </ul>
-                            </div>
+                
+                        <a href="detalhesdemanda.html" class="detalhes-ld">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            </svg>
+                        </a>
 
-                    
-                            <a href="detalhesdemanda.html" class="detalhes-ld">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-    
+                    </div>  
+                
+                    <div class="card-ld shadow">
+                        
+                        <div>
+                            <h3>Título</h3>
+                            <p>Descrição</p>
+                            <ul>
+                                <li>Tipo</li>
+                                <li>Prioridade</li>
+                                <li>Responsável</li>
+                                <li>Status</li>
+                            </ul>
                         </div>
 
-                        <div class="card-ld">
-                            
-                            <div>
-                                <h3>Título</h3>
-                                <p>Descrição</p>
-                                <ul>
-                                    <li>Tipo</li>
-                                    <li>Prioridade</li>
-                                    <li>Responsável</li>
-                                    <li>Status</li>
-                                </ul>
-                            </div>
+                
+                        <a href="detalhesdemanda.html" class="detalhes-ld">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            </svg>
+                        </a>
 
-                    
-                            <a href="detalhesdemanda.html" class="detalhes-ld">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
-                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-                                </svg>
-                            </a>
-    
+                    </div>
+
+                    <div class="card-ld shadow">
+                        
+                        <div>
+                            <h3>Título</h3>
+                            <p>Descrição</p>
+                            <ul>
+                                <li>Tipo</li>
+                                <li>Prioridade</li>
+                                <li>Responsável</li>
+                                <li>Status</li>
+                            </ul>
                         </div>
+
+                
+                        <a href="detalhesdemanda.html" class="detalhes-ld">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            </svg>
+                        </a>
+
+                    </div>
+
+                    <div class="card-ld shadow">
+                        
+                        <div>
+                            <h3>Título</h3>
+                            <p>Descrição</p>
+                            <ul>
+                                <li>Tipo</li>
+                                <li>Prioridade</li>
+                                <li>Responsável</li>
+                                <li>Status</li>
+                            </ul>
+                        </div>
+
+                
+                        <a href="detalhesdemanda.html" class="detalhes-ld">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16" fill="currentColor">
+                                <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                            </svg>
+                        </a>
+
                     </div>
                 </div>
             </div>
