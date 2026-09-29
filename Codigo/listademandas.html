@@ -38,128 +38,128 @@
                     </div>
 
                     <br>
-
-                    <div class="pesquisa">
-                        <input id="pesquisa" class="form-control" type="text"
-                        required placeholder="Pesquisa">
-                    </div>
-
-                    <hr>
-                    <br>
-
-                    <div class="filtro dropstart"> 
-                        
-                        <ul class="dropdown-menu d-flex row p-2 rounded-3 shadow length-300px">
-                            <p>Status</p>
-                            <div>
-                                <input id="fs-aberta" class="form-check-input" type="checkbox">
-                                <label for="fs-aberta" class="form-check-label">
-                                    Aberta
-                                </label>
+                        <form>
+                            <div class="pesquisa">
+                                <input id="pesquisa" class="form-control" type="text"
+                                required placeholder="Pesquisa">
                             </div>
+                            <div id="erroPesquisa" class="invalid-feedback"></div>
+
+                            <br>
+
+                            <div class="filtro dropstart"> 
                             
-                            <div>
-                                <input id="fs-andamento" class="form-check-input" type="checkbox">
-                                <label for="fs-andamento" class="form-check-label">
-                                    Em andamento
-                                </label>
-                            </div>
+                            <id class="dropdown-menu d-flex row p-2 rounded-3 shadow length-300px">
+                                <p>Status</p>
+                                <div>
+                                    <input id="fs-aberta" class="form-check-input" type="checkbox">
+                                    <label for="fs-aberta" class="form-check-label">
+                                        Aberta
+                                    </label>
+                                </div>
+                                
+                                <div>
+                                    <input id="fs-andamento" class="form-check-input" type="checkbox">
+                                    <label for="fs-andamento" class="form-check-label">
+                                        Em andamento
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="fs-revisao" class="form-check-input" type="checkbox">
-                                <label for="fs-revisao" class="form-check-label">
-                                   Em revisão
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="fs-revisao" class="form-check-input" type="checkbox">
+                                    <label for="fs-revisao" class="form-check-label">
+                                    Em revisão
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="fs-concluida" class="form-check-input" type="checkbox">
-                                <label for="fs-concluida" class="form-check-label">
-                                   Concluída
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="fs-concluida" class="form-check-input" type="checkbox">
+                                    <label for="fs-concluida" class="form-check-label">
+                                    Concluída
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="fs-cancelada" class="form-check-input" type="checkbox">
-                                <label for="fs-cancelada" class="form-check-label">
-                                   Cancelada
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="fs-cancelada" class="form-check-input" type="checkbox">
+                                    <label for="fs-cancelada" class="form-check-label">
+                                    Cancelada
+                                    </label>
+                                </div>
 
-                            <div><br></div>
+                                <div><br></div>
 
-                            <p>Prioridade</p>
-                            
-                            <div>
-                                <input id="fp-critica" class="form-check-input" type="checkbox">
-                                <label for="fp-critica" class="form-check-label">
-                                   Crítica
-                                </label>
-                            </div>
+                                <p>Prioridade</p>
+                                
+                                <div>
+                                    <input id="fp-critica" class="form-check-input" type="checkbox">
+                                    <label for="fp-critica" class="form-check-label">
+                                    Crítica
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="fp-alta" class="form-check-input" type="checkbox">
-                                <label for="fp-alta" class="form-check-label">
-                                   Alta
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="fp-alta" class="form-check-input" type="checkbox">
+                                    <label for="fp-alta" class="form-check-label">
+                                    Alta
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="fp-media" class="form-check-input" type="checkbox">
-                                <label for="fp-media" class="form-check-label">
-                                   Média
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="fp-media" class="form-check-input" type="checkbox">
+                                    <label for="fp-media" class="form-check-label">
+                                    Média
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="fp-baixa" class="form-check-input" type="checkbox">
-                                <label for="fp-baixa" class="form-check-label">
-                                   Baixa
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="fp-baixa" class="form-check-input" type="checkbox">
+                                    <label for="fp-baixa" class="form-check-label">
+                                    Baixa
+                                    </label>
+                                </div>
 
-                            <div><br></div>
-                            
-                            <p>Tipo</p>
+                                <div><br></div>
+                                
+                                <p>Tipo</p>
 
-                            <div>
-                                <input id="ft-tarefa" class="form-check-input" type="checkbox">
-                                <label for="ft-tarefa" class="form-check-label">
-                                   Tarefa
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="ft-tarefa" class="form-check-input" type="checkbox">
+                                    <label for="ft-tarefa" class="form-check-label">
+                                    Tarefa
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="ft-defeito" class="form-check-input" type="checkbox">
-                                <label for="ft-defeito" class="form-check-label">
-                                   Defeito
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="ft-defeito" class="form-check-input" type="checkbox">
+                                    <label for="ft-defeito" class="form-check-label">
+                                    Defeito
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="ft-melhoria" class="form-check-input" type="checkbox">
-                                <label for="ft-melhoria" class="form-check-label">
-                                   Melhoria
-                                </label>
-                            </div>
+                                <div>
+                                    <input id="ft-melhoria" class="form-check-input" type="checkbox">
+                                    <label for="ft-melhoria" class="form-check-label">
+                                    Melhoria
+                                    </label>
+                                </div>
 
-                            <div>
-                                <input id="ft-documentacao" class="form-check-input" type="checkbox">
-                                <label for="ft-documentacao" class="form-check-label">
-                                   Documentação
-                                </label>
-                            </div>
-                            
-                            <div><br></div>
+                                <div>
+                                    <input id="ft-documentacao" class="form-check-input" type="checkbox">
+                                    <label for="ft-documentacao" class="form-check-label">
+                                    Documentação
+                                    </label>
+                                </div>
+                                
+                                <div><br></div>
 
-                            <button class="btn-filtro" id="btn-filtro" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
-                                    <path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/>
-                                </svg>
-                                Filtrar
-                            </button>
-
-                        </ul>
+                                <button class="btn-filtro" id="btn-filtro" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
+                                        <path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/>
+                                    </svg>
+                                    Filtrar
+                                </button>
+                            </id>
+                        </form>
                     </div>
                 </div>  
             </div>

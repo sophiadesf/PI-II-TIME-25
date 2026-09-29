@@ -61,7 +61,20 @@
     align-items: center;
     justify-content: center;
     height: 35px;
-width: 100%;
+    width: 100%;
+    gap: 2%;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+}
+
+.btn-pesquisa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 100%;
     gap: 2%;
 
     border: 1px solid #ccc;
