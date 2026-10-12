@@ -8,6 +8,7 @@ import express, { Request, Response } from "express";
 import rotasProjetos from "./rotas/projetos";
 import rotasDemandas from "./rotas/demandas";
 import listaDemandas from "./rotas/listagemDemandas";
+import rotasDashboard from "./rotas/dashboard"; // Autoria: Sophia D B Lopes
 
 const app = express();
 const PORTA = 3000;
@@ -24,6 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/projetos", rotasProjetos);
 app.use("/demandas", rotasDemandas);
 app.use("/listagem", listaDemandas);
+app.use("/dashboard", rotasDashboard); // GET /dashboard
 
 app.listen(PORTA, () => {
     console.log(`Servidor ativo na porta ${PORTA}`);
