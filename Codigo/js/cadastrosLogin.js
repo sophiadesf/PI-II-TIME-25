@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
-    // FUNÇÕES AUXILIARES DE VALIDAÇÃO
+    // FUNÇÕES AUXILIARES DE VALIDAÇÃO - feito por Sophia Fabri
     // ----------------------------------------------------
-
-    // AUDITORIA SOPHIA FABRI, funções de validação de campos de cadastro, login e esqueci senha
 
     function mostrarErro(input, mensagem) {
         let erroDiv = input.nextElementSibling;
@@ -27,13 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         input.style.borderColor = '#ccc';
     }
 
-    // Validar formato de e-mail
     function eEmailValido(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     }
 
-    // Aplicar regras de senha (mínimo 8 caracteres, letra maiúscula, minúscula, número e caractere especial)
     function eSenhaForte(senha) {
         const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return re.test(senha);
@@ -45,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formCadastro = document.getElementById('formCadastro');
     if (formCadastro) {
         formCadastro.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evita o envio padrão para tratar via validação/fetch se necessário
             let valido = true;
 
             const nome = document.getElementById('nome');
@@ -52,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const senha = document.getElementById('senha');
             const confirmaSenha = document.getElementById('confirmaSenha');
 
-            // Impedir envio de campos obrigatórios vazios & validar tamanho mínimo
             if (!nome.value.trim()) {
                 mostrarErro(nome, 'O nome é obrigatório.');
                 valido = false;
@@ -63,29 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 limparErro(nome);
             }
 
-            // Validar e-mail
             if (!email.value.trim()) {
                 mostrarErro(email, 'O e-mail é obrigatório.');
                 valido = false;
             } else if (!eEmailValido(email.value.trim())) {
-                mostrarErro(email, 'Digite um formato de e-mail válido (ex: usuario@dominio.com).');
+                mostrarErro(email, 'Digite um formato de e-mail válido.');
                 valido = false;
             } else {
                 limparErro(email);
             }
 
-            // Validar regras da senha
             if (!senha.value) {
                 mostrarErro(senha, 'A senha é obrigatória.');
                 valido = false;
             } else if (!eSenhaForte(senha.value)) {
-                mostrarErro(senha, 'A senha deve ter no mínimo 8 caracteres, incluir letras maiúsculas, minúsculas, números e símbolos (@$!%*?&).');
+                mostrarErro(senha, 'A senha deve ter no mínimo 8 caracteres, incluir letras maiúsculas, minúsculas, números e símbolos.');
                 valido = false;
             } else {
                 limparErro(senha);
             }
 
-            // Confirmar senha
             if (!confirmaSenha.value) {
                 mostrarErro(confirmaSenha, 'Confirme a sua senha.');
                 valido = false;
@@ -96,45 +89,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 limparErro(confirmaSenha);
             }
 
-            // Impedir o envio enquanto houver dados inválidos
-            if (!valido) {
-                e.preventDefault();
-            } else {
+            if (valido) {
                 alert('Cadastro efetuado com sucesso!');
+                // formCadastro.submit(); // Descomente caso o envio seja tradicional por formulário HTML
             }
         });
     }
 
     // ----------------------------------------------------
-    // 2. VALIDAÇÃO DA TELA DE LOGIN
+    // 2. VALIDAÇÃO E ENVIO DA TELA DE LOGIN (COM FETCH)
     // ----------------------------------------------------
     const formLogin = document.getElementById('formLogin');
     if (formLogin) {
-        formLogin.addEventListener('submit', (e) => {
+        formLogin.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
             let valido = true;
+            // Se na sua página de login o input de email tiver outro ID, ajuste aqui (ex: 'emailLogin')
+            const emailInput = document.getElementById('email');
+            const senhaInput = document.getElementById('senha');
 
-            const email = document.getElementById('email');
-            const senha = document.getElementById('senha');
-
-            if (!email.value.trim()) {
-                mostrarErro(email, 'O e-mail é obrigatório.');
+            if (!emailInput.value.trim()) {
+                mostrarErro(emailInput, 'O e-mail é obrigatório.');
                 valido = false;
-            } else if (!eEmailValido(email.value.trim())) {
-                mostrarErro(email, 'Insira um e-mail válido.');
-                valido = false;
-            } else {
-                limparErro(email);
-            }
-
-            if (!senha.value) {
-                mostrarErro(senha, 'A senha é obrigatória.');
+            } else if (!eEmailValido(emailInput.value.trim())) {
+                mostrarErro(emailInput, 'Insira um e-mail válido.');
                 valido = false;
             } else {
-                limparErro(senha);
+                limparErro(emailInput);
             }
 
-            if (!valido) {
-                e.preventDefault();
+            if (!senhaInput.value) {
+                mostrarErro(senhaInput, 'A senha é obrigatória.');
+                valido = false;
+            } else {
+                limparErro(senhaInput);
+            }
+
+            if (!valido) return;
+
+            try {
+                const resposta = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: emailInput.value.trim(),
+                        senha: senhaInput.value
+                    })
+                });
+
+                const resultado = await resposta.json();
+
+                if (resposta.ok) {
+                    alert('Login bem-sucedido! Bem-vindo, ' + resultado.usuario.nome);
+                    // window.location.href = 'dashboard.html';
+                } else {
+                    alert('Erro no login: ' + resultado.erro);
+                }
+            } catch (erro) {
+                console.error('Erro de conexão com o servidor:', erro);
+                alert('Não foi possível conectar ao servidor. Verifique se o server.js está a rodar.');
             }
         });
     }
