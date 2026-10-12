@@ -16,8 +16,19 @@ const checkboxMelhoria = document.querySelector("#ft-melhoria");
 const checkboxDocumentacao = document.querySelector("#ft-documentacao");
 
 const erroPesquisa = document.querySelector("#erroPesquisa");
+const erroFiltro = document.querySelector("#erroFiltro");
 
 const btnFiltro = document.querySelector("#btn-filtro");
+
+const camposComErro = [
+    campoPesquisa,
+    btnFiltro
+];
+
+const mensagemErro = [
+    erroPesquisa,
+    erroFiltro
+];
 
 function mostrarErro(campo, elementoErro, mensagem) {
     campo.classList.add("is-invalid");
@@ -29,18 +40,21 @@ function limparErros() {
         campo.classList.remove("is-invalid");
     });
 
-    mensagensDeErro.forEach(function (elementoErro) {
+    mensagemErro.forEach(function (elementoErro) {
         elementoErro.innerText = "";
     });
 }
 
-
 btnFiltro.addEventListener('click', function(event) {
     event.preventDefault();
+
+    limparErros();
     
     let validacao = true;
+    let cont = 0;
 
-    const pesquisa = campoPesquisa.value;
+    const pesquisa = campoPesquisa.value.trim();
+
     const aberto = checkboxAberto.checked;
     const andamento = checkboxAndamento.checked;
     const revisao = checkboxRevisao.checked;
@@ -63,6 +77,12 @@ btnFiltro.addEventListener('click', function(event) {
         cancelada
     ];
 
+    for (let i=0; i<5; i++) {
+        if (status[i]){
+            cont++;
+        }
+    }
+
     const prioridade = [
         critica,
         alta,
@@ -70,12 +90,29 @@ btnFiltro.addEventListener('click', function(event) {
         baixa
     ];
 
+    for (let i=0; i<4; i++) {
+        if (prioridade[i]){
+            cont++;
+        }
+    }
+
     const tipo = [
         tarefa,
         defeito,
         melhoria,
         documentacao
     ];
+
+    for (let i=0; i<4; i++) {
+        if (tipo[i]){
+            cont++;
+        }
+    }
+
+    if (cont === 1){
+        validacao = false;
+        mostrarErro(btnFiltro, erroFiltro, "Selecione no mínimo 2 filtros.");
+    }
 
     if (pesquisa.length > 0 && pesquisa.length < 3) {
         validacao = false;

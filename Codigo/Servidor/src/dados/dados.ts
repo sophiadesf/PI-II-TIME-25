@@ -1,7 +1,7 @@
 /*
     Dados de teste
 
-    Autor: Pedro Tafner
+    Autor: Pedro Tafner e Joao Felipe
 
 */
 
@@ -38,13 +38,15 @@ export interface Demanda {
 export const projetos: Projeto[] = [
     { id: 1, nome: "Portal do Cliente" },
     { id: 2, nome: "Aplicativo Mobile" },
-    { id: 3, nome: "Sistema Financeiro" }
+    { id: 3, nome: "Sistema Financeiro" },
+    { id: 4, nome: "Sistema Web" }
 ];
 
 export const usuarios: Usuario[] = [
     { id: 1, nome: "Ana Souza", email: "ana@empresa.com", senha: "Admin@123", perfil: "Administrador" },
     { id: 2, nome: "Bruno Lima", email: "bruno@empresa.com", senha: "Lider@123", perfil: "Líder de Projeto" },
-    { id: 3, nome: "Carla Mendes", email: "carla@empresa.com", senha: "Membro@123", perfil: "Membro da Equipe" }
+    { id: 3, nome: "Carla Mendes", email: "carla@empresa.com", senha: "Membro@123", perfil: "Membro da Equipe" },
+    { id: 4, nome: "Carlos Pinheiro", email: "carlos@empresa.com", senha: "Membro@123", perfil: "Membro da Equipe" }
 ];
 
 export const demandas: Demanda[] = [
@@ -82,9 +84,48 @@ export const demandas: Demanda[] = [
         prioridade: "Baixa",
         status: "Aberta",
         idProjeto: 2,
-        idResponsavel: null,
+        idResponsavel: 1,
         prazo: null,
         dataCriacao: "2026-10-08T16:00:00.000Z",
         dataAtualizacao: "2026-10-08T16:00:00.000Z"
+    },
+    {
+        id: 4,
+        titulo: "Corrigir erro no login",
+        descricao: "Usuário não consegue logar quando a senha tem caracteres especiais.",
+        tipo: "Defeito",
+        prioridade: "Alta",
+        status: "Aberta",
+        idProjeto: 4,
+        idResponsavel: 4,
+        prazo: "2026-10-15",
+        dataCriacao: "2026-10-10",
+        dataAtualizacao: "2026-10-15"
+    },
+    {
+        id: 5,
+        titulo: "Criar tela de dashboard",
+        descricao: "Desenvolver a interface gráfica inicial do painel de indicadores.",
+        tipo: "Tarefa",
+        prioridade: "Média",
+        status: "Em andamento",
+        idProjeto: 2,
+        idResponsavel: 1,
+        prazo: null,
+        dataCriacao: "2026-10-11",
+        dataAtualizacao: "2026-10-20"
+    },
+    {
+        id: 6,
+        titulo: "Atualizar documentação da API",
+        descricao: "Adicionar os endpoints de GET e POST no README.",
+        tipo: "Documentação",
+        prioridade: "Baixa",
+        status: "Concluida",
+        idProjeto: 4,
+        idResponsavel: 4,
+        prazo: null,
+        dataCriacao: "2026-10-01",
+        dataAtualizacao: "2026-10-05"
     }
 ];

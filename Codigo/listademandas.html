@@ -31,7 +31,7 @@
             <!-- Conteudo da Lista de Demandas -->
             <div class="main-ld">
 
-                <div class="cabecalho-ld" style="overflow: scroll;">
+                <div class="cabecalho-ld" style="overflow: hidden;">
                     <div>
                         <h3>Lista de Demandas</h3>
                         <p>x demandas estão cadastradas.</p>
@@ -42,8 +42,8 @@
                             <div class="pesquisa">
                                 <input id="pesquisa" class="form-control" type="text"
                                 required placeholder="Pesquisa">
+                                <div id="erroPesquisa" class="invalid-feedback"></div>
                             </div>
-                            <div id="erroPesquisa" class="invalid-feedback"></div>
 
                             <br>
 
@@ -158,6 +158,7 @@
                                     </svg>
                                     Filtrar
                                 </button>
+                                <div id="erroFiltro" class="invalid-feedback"></div>
                             </id>
                         </form>
                     </div>
@@ -167,7 +168,7 @@
             <div style="border-left: 2px solid #ccc; height: auto; width: 111px; margin: 0 auto;"></div>
 
 
-            <div style="overflow: scroll;">
+            <div style="overflow: hidden;">
                 <br>
                 <div class="listagem">
                     <div class="card-ld shadow">
