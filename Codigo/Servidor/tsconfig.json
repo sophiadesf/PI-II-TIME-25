@@ -1,6 +1,11 @@
 {
-"extends": "@tsconfig/recommended/tsconfig.json",
 "compilerOptions": {
+"target": "es2016", // Versão do JavaScript gerado
+"module": "commonjs", // Sistema de módulos usado pelo Node
+"esModuleInterop": true, // Permite importar módulos CommonJS com import padrão
+"forceConsistentCasingInFileNames": true, // Exige maiúsculas/minúsculas consistentes nos imports
+"strict": true, // Ativa todas as verificações estritas de tipo
+"skipLibCheck": true, // Não verifica os tipos das bibliotecas em node_modules
 "rootDir": "src", // Diretório de códigos TypeScript
 "outDir": "lib", // Diretório de saída para os arquivos compilados
 "sourceMap": true, // Gera mapas de origem para facilitar o debug
