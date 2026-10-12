@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // FUNÇÕES AUXILIARES DE VALIDAÇÃO - feito por Sophia Fabri
@@ -105,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             let valido = true;
-            // Se na sua página de login o input de email tiver outro ID, ajuste aqui (ex: 'emailLogin')
             const emailInput = document.getElementById('email');
             const senhaInput = document.getElementById('senha');
 
@@ -142,7 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (resposta.ok) {
                     alert('Login bem-sucedido! Bem-vindo, ' + resultado.usuario.nome);
-                    // window.location.href = 'dashboard.html';
+                    // Redireciona para a página principal após o login (altere 'menu.html' se necessário)
+                    window.location.href = 'menu.html';
                 } else {
                     alert('Erro no login: ' + resultado.erro);
                 }
