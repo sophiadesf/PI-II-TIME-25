@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // FUNÇÕES AUXILIARES DE VALIDAÇÃO - feito por Sophia Fabri
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formCadastro = document.getElementById('formCadastro');
     if (formCadastro) {
         formCadastro.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evita o envio padrão para tratar via validação/fetch se necessário
+            e.preventDefault();
             let valido = true;
 
             const nome = document.getElementById('nome');
@@ -92,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (valido) {
                 alert('Cadastro efetuado com sucesso!');
-                // formCadastro.submit(); // Descomente caso o envio seja tradicional por formulário HTML
             }
         });
     }
@@ -141,11 +139,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const resultado = await resposta.json();
 
                 if (resposta.ok) {
-                    alert('Login bem-sucedido! Bem-vindo, ' + resultado.usuario.nome);
-                    // Redireciona para a página principal após o login (altere 'menu.html' se necessário)
-                    window.location.href = 'menu.html';
+                    alert('Login bem-sucedido! Bem-vindo, ' + (resultado.usuario?.nome || 'Utilizador'));
+                    // Redireciona corretamente para o index.html após o login certo
+                    window.location.href = 'index.html';
                 } else {
-                    alert('Erro no login: ' + resultado.erro);
+                    // Se estiver errado, exibe o aviso de erro e pede o login novamente
+                    alert('Erro no login: ' + (resultado.erro || 'Credenciais inválidas.'));
                 }
             } catch (erro) {
                 console.error('Erro de conexão com o servidor:', erro);
@@ -193,3 +192,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+```
