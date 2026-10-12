@@ -4,20 +4,19 @@
   "description": "Servidor para Projeto Integrador II",
   "license": "ISC",
   "author": "",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "prestart": "npm run build",
-    "start": "node dist/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc-watch --onSuccess \"node ./lib/index.js\""
   },
   "dependencies": {
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.13",
     "@types/express": "^5.0.6",
     "@types/node": "^24.19.2",
-    "tsx": "^4.23.15",
+    "tsc-watch": "^7.2.1",
     "typescript": "^7.0.2"
   }
 }

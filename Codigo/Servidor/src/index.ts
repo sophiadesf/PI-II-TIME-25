@@ -5,6 +5,8 @@
 */
 
 import express, { Request, Response } from "express";
+import rotasProjetos from "./rotas/projetos";
+import rotasDemandas from "./rotas/demandas";
 
 const app = express();
 const PORTA = 3000;
@@ -16,6 +18,10 @@ app.use(express.json());
 app.get("/", (req: Request, res: Response) => {
     res.status(200).json({ mensagem: "API do Sistema de Acompanhamento de Demandas ativa" });
 });
+
+// Rotas do sistema
+app.use("/projetos", rotasProjetos);
+app.use("/demandas", rotasDemandas);
 
 app.listen(PORTA, () => {
     console.log(`Servidor ativo na porta ${PORTA}`);
