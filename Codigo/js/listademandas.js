@@ -1,4 +1,8 @@
-// Lista de Demandas - João Felipe Bodo Pinheiro
+/*
+    JS da tela de Listagem de Demandas (busca e filtros)
+
+    Autor: João Felipe Bodo Pinheiro
+*/
 
 const campoPesquisa = document.querySelector("#pesquisa");
 const checkboxAberto = document.querySelector("#fs-aberta");

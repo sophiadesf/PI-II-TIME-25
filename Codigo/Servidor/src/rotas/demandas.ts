@@ -1,8 +1,7 @@
 /*
-    Rotas de demandas
+    Rotas de cadastro de demandas
 
     Autor: Pedro Tafner
-
 */
 
 import { Router, Request, Response } from "express";
@@ -82,6 +81,8 @@ rotasDemandas.post("/", (req: Request, res: Response) => {
     //Validar Projeto
     if (idProjeto === undefined || idProjeto === null || idProjeto === "") {
         erros.push("Escolha o projeto ao qual se refere essa demanda.");
+    } else if (typeof idProjeto !== "number" && typeof idProjeto !== "string") {
+        erros.push("O projeto deve ser informado pelo seu número (id).");
     } else {
         const projetoEncontrado = projetos.find(function (projeto) {
             return projeto.id === Number(idProjeto);
@@ -96,14 +97,18 @@ rotasDemandas.post("/", (req: Request, res: Response) => {
     let responsavelFinal: number | null = null;
 
     if (idResponsavel !== undefined && idResponsavel !== null && idResponsavel !== "") {
-        const usuarioEncontrado = usuarios.find(function (usuario) {
-            return usuario.id === Number(idResponsavel);
-        });
-
-        if (usuarioEncontrado === undefined) {
-            erros.push("O responsável informado não existe.");
+        if (typeof idResponsavel !== "number" && typeof idResponsavel !== "string") {
+            erros.push("O responsável deve ser informado pelo seu número (id).");
         } else {
-            responsavelFinal = usuarioEncontrado.id;
+            const usuarioEncontrado = usuarios.find(function (usuario) {
+                return usuario.id === Number(idResponsavel);
+            });
+
+            if (usuarioEncontrado === undefined) {
+                erros.push("O responsável informado não existe.");
+            } else {
+                responsavelFinal = usuarioEncontrado.id;
+            }
         }
     }
 
@@ -128,8 +133,16 @@ rotasDemandas.post("/", (req: Request, res: Response) => {
     // mesmo que a requisição envie outros valores
     const agora = new Date().toISOString();
 
+    // Procura o maior id que já existe para o novo não se repetir
+    let maiorId = 0;
+    demandas.forEach(function (demanda) {
+        if (demanda.id > maiorId) {
+            maiorId = demanda.id;
+        }
+    });
+
     const novaDemanda: Demanda = {
-        id: demandas.length + 1,
+        id: maiorId + 1,
         titulo: titulo.trim(),
         descricao: descricao.trim(),
         tipo: tipo,

@@ -1,4 +1,9 @@
-/* Detalhes de Demandas- Arthur Paioli */
+/*
+    Estilos da tela de Detalhes da Demanda
+
+    Autor: Arthur Cavallaro Paioli
+*/
+
 .main-dd {
     display: flex;
     flex-direction: column;

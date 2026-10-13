@@ -1,4 +1,9 @@
-// AUTORIA: Sophia D B Lopes
+/*
+    JS que carrega o menu e a barra superior em todas as telas
+
+    Autor: Sophia Dalla Bernardita Lopes
+*/
+
 fetch("topbar.html")
     .then(response => response.text())
     .then(data => {

@@ -1,3 +1,10 @@
+/*
+    Estilos da página de Cadastro de Demandas
+
+    Autor: Pedro Tafner
+*/
+
+/* Botão de salvar a nova demanda */
 .nova-demanda{
     background-color: #3C6F9B;
     color: white;
@@ -6,6 +13,7 @@
     border-radius: 5px;
 }
 
+/* Centraliza o título "Nova Demanda" */
 .container h2{
     text-align: center;
 }
