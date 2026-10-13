@@ -1,84 +1,73 @@
-/*
-    Rotas de listagem de demandas
-
-    Autor: João Felipe Bodo Pinheiro
-*/
+// Autoria: João Felipe
 
 import express, { Request, Response } from "express";
 import { demandas, projetos, usuarios } from "../dados/dados";
 
 const router = express.Router();
 
-// Ordem usada para ordenar por prioridade e por status
-const ordemPrioridade = ["Crítica", "Alta", "Média", "Baixa"];
-const ordemStatus = ["Aberta", "Em andamento", "Em revisão", "Concluída", "Cancelada"];
-const ordenacoesValidas = ["prioridade", "dataCriacao", "prazo", "status"];
+// Função auxiliar para garantir que o query param seja sempre um array de strings
+const normalizarArray = (param: any): string[] => {
+    if (!param) return [];
+    if (Array.isArray(param)) return param.map(String);
+    return [String(param)];
+};
 
-// GET /demandas - lista as demandas com filtros, busca e ordenação
-// Filtros: status, prioridade, tipo, idResponsavel e idProjeto | Busca: busca | Ordenação: ordenar
-// Exemplo: /demandas?status=Aberta&prioridade=Alta&busca=login&ordenar=prazo
+// GET /demandas 
 router.get("/", (req: Request, res: Response) => {
-    const { status, prioridade, tipo, idResponsavel, idProjeto, busca, ordenar } = req.query;
+    let resultado = demandas;
 
-    //Validar ordenação
-    if (ordenar && !ordenacoesValidas.includes(String(ordenar))) {
-        return res.status(400).json({ erro: "Ordenação inválida. Use: prioridade, dataCriacao, prazo ou status." });
-    }
+    const statusArray = normalizarArray(req.query.status);
+    const prioridadeArray = normalizarArray(req.query.prioridade);
+    const tipoArray = normalizarArray(req.query.tipo);
+    const busca = req.query.busca ? String(req.query.busca).toLowerCase() : "";
 
-    // Copia a lista para os filtros e a ordenação não alterarem os dados originais
-    let resultado = demandas.slice();
-
-    // Filtros (cada um só é aplicado se for informado na URL)
-    if (status) {
-        resultado = resultado.filter(demanda => demanda.status === status);
-    }
-    if (prioridade) {
-        resultado = resultado.filter(demanda => demanda.prioridade === prioridade);
-    }
-    if (tipo) {
-        resultado = resultado.filter(demanda => demanda.tipo === tipo);
-    }
-    if (idResponsavel) {
-        resultado = resultado.filter(demanda => demanda.idResponsavel === Number(idResponsavel));
-    }
-    if (idProjeto) {
-        resultado = resultado.filter(demanda => demanda.idProjeto === Number(idProjeto));
+    const totalFiltros = statusArray.length + prioridadeArray.length + tipoArray.length;
+    
+    if (totalFiltros === 1) {
+        return res.status(400).json({ error: "É necessário informar pelo menos dois critérios de busca" });
     }
 
-    // Busca textual no título ou na descrição, sem diferenciar maiúsculas e minúsculas
+    if (statusArray.length > 0) {
+        const statusLowerCase = statusArray.map(status => status.toLowerCase());
+        resultado = resultado.filter(demanda => statusLowerCase.includes(demanda.status.toLowerCase()));
+    }
+
+    if (prioridadeArray.length > 0) {
+        const prioridadeLowerCase = prioridadeArray.map(prioridade => prioridade.toLowerCase());
+        resultado = resultado.filter(demanda => prioridadeLowerCase.includes(demanda.prioridade.toLowerCase()));
+    }
+
+    if (tipoArray.length > 0) {
+        const tipoLowerCase = tipoArray.map(tipo => tipo.toLowerCase());
+        resultado = resultado.filter(demanda => tipoLowerCase.includes(demanda.tipo.toLowerCase()));
+    }
+
     if (busca) {
-        const pesquisa = String(busca).toLowerCase();
-        resultado = resultado.filter(demanda =>
-            demanda.titulo.toLowerCase().includes(pesquisa) ||
-            demanda.descricao.toLowerCase().includes(pesquisa)
-        );
+        if (busca.length < 3) {
+            return res.status(400).json({ error: "A busca deve ter no mínimo 3 caracteres" });
+        }
+        
+        resultado = resultado.filter(demanda => 
+            demanda.titulo.toLowerCase().includes(busca) || 
+            demanda.descricao.toLowerCase().includes(busca)
+        ); 
     }
 
-    // Ordenação
-    if (ordenar === "prioridade") {
-        resultado.sort((a, b) => ordemPrioridade.indexOf(a.prioridade) - ordemPrioridade.indexOf(b.prioridade));
-    } else if (ordenar === "status") {
-        resultado.sort((a, b) => ordemStatus.indexOf(a.status) - ordemStatus.indexOf(b.status));
-    } else if (ordenar === "dataCriacao") {
-        resultado.sort((a, b) => a.dataCriacao.localeCompare(b.dataCriacao));
-    } else if (ordenar === "prazo") {
-        // Demandas sem prazo vão para o final da lista
-        resultado.sort((a, b) => (a.prazo || "9999-99-99").localeCompare(b.prazo || "9999-99-99"));
+// GET /demandas/:id
+router.get("/:id", (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "ID inválido. O ID deve ser um número." });
     }
 
-    // Acrescenta o nome do projeto e do responsável em cada demanda
-    const listaCompleta = resultado.map(demanda => {
-        const projeto = projetos.find(item => item.id === demanda.idProjeto);
-        const responsavel = usuarios.find(item => item.id === demanda.idResponsavel);
+    const demanda = demandas.find(demanda => demanda.id === id);
+    
+    if (!demanda) {
+        return res.status(404).json({ error: "Demanda não encontrada" });
+    }
 
-        return {
-            ...demanda,
-            nomeProjeto: projeto ? projeto.nome : null,
-            nomeResponsavel: responsavel ? responsavel.nome : null
-        };
-    });
-
-    return res.status(200).json(listaCompleta);
+    return res.status(200).json(demanda);
 });
 
 export default router;
