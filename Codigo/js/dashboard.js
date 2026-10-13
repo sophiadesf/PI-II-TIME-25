@@ -1,6 +1,7 @@
 /*
-    AUTORIA: Sophia D B Lopes
-    TELA: Dashboard
+    JS da tela de Dashboard
+
+    Autor: Sophia Dalla Bernardita Lopes
 
     Arquivo responsável pelos comportamentos da tela
     de Dashboard utilizando JavaScript e DOM.

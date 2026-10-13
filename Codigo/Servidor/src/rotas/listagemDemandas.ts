@@ -1,7 +1,7 @@
 // Autoria: João Felipe
 
 import express, { Request, Response } from "express";
-import { demandas } from "../dados/dados"; 
+import { demandas, projetos, usuarios } from "../dados/dados";
 
 const router = express.Router();
 
@@ -52,9 +52,6 @@ router.get("/", (req: Request, res: Response) => {
             demanda.descricao.toLowerCase().includes(busca)
         ); 
     }
-    
-    return res.status(200).json(resultado);
-});
 
 // GET /demandas/:id
 router.get("/:id", (req: Request, res: Response) => {

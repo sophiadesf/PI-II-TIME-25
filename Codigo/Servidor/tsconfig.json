@@ -1,3 +1,8 @@
+/*
+    Configuração do TypeScript do servidor
+
+    Autor: Pedro Tafner
+*/
 {
 "compilerOptions": {
 "target": "es2016", // Versão do JavaScript gerado

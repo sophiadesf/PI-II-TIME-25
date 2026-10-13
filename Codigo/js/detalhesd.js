@@ -1,17 +1,28 @@
+/*
+    JS da tela de Detalhes da Demanda (alterar status e editar a demanda)
 
+    Autor: Arthur Cavallaro Paioli
+*/
+
+// Janela de alterar status e o fundo cinza que aparece atrás dela
 const caixa = document.getElementById("alterar_status");
 const fundo = document.getElementById("fundoCinza");
+
+// Controla se os campos da demanda estão no modo de edição
 let emModoEdicao = false;
 
+// Abre a janela de alterar status
 function abrir(){
     caixa.style.display = "block";
     fundo.style.display = "block";
 }
+// Fecha a janela de alterar status
 function fechar(){
     caixa.style.display = "none";
     fundo.style.display = "none";
 }
 
+// Troca o status na tela e registra a alteração no histórico (com data e hora)
 function salvarStatus(){
     const confirmacao = confirm("TEM CERTEZA QUE DESEJA ALTERAR O STATUS?");
     if (confirmacao){
@@ -63,6 +74,8 @@ function salvarStatus(){
     }
 }
 
+// Primeiro clique: transforma os campos em caixas de texto para editar
+// Segundo clique: salva os valores digitados e volta a mostrar como texto
 function ativarEdicao() {
     const btnEditar = document.getElementById("botao-pri");
     

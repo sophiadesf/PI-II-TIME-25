@@ -1,7 +1,7 @@
 /*
-    Rota do Dashboard - resumo das demandas
-    AUTORIA: Sophia D B Lopes
-    PROJETO: Sistema de Acompanhamento de Demandas de Desenvolvimento
+    Rotas do dashboard (resumo das demandas)
+
+    Autor: Sophia Dalla Bernardita Lopes
 */
 
 import { Router, Request, Response } from "express";
@@ -9,10 +9,10 @@ import { demandas } from "../dados/dados";
 
 const rotasDashboard = Router();
 
-// Status que representam demandas ainda nao finalizadas
+// Status que representam demandas ainda não finalizadas ("em aberto")
 const statusEmAberto = ["Aberta", "Em andamento", "Em revisão"];
 
-// Converte uma data para AAAA-MM-DD, desconsiderando o horário.
+// Converte uma data para AAAA-MM-DD, desconsiderando o horário
 function formatarData(data: Date): string {
     const ano = data.getFullYear();
     const mes = ("0" + (data.getMonth() + 1)).slice(-2);
@@ -20,9 +20,9 @@ function formatarData(data: Date): string {
     return `${ano}-${mes}-${dia}`;
 }
 
-// GET /dashboard - consulta os dados 
+// GET /dashboard - retorna os totais e as listas de demandas críticas e próximas do prazo
 rotasDashboard.get("/", (req: Request, res: Response) => {
-    // Inicializa as categorias
+    // Começa todas as contagens em zero
     const porStatus: Record<string, number> = {
         "Aberta": 0,
         "Em andamento": 0,
@@ -58,13 +58,13 @@ rotasDashboard.get("/", (req: Request, res: Response) => {
         }
     }
 
-    // Em aberto: demandas com status aberta, em andamento ou em revisão.
+    // Críticas em aberto: prioridade Crítica e status Aberta, Em andamento ou Em revisão
     const criticasEmAberto = demandas.filter((demanda) => {
         return demanda.prioridade === "Crítica" && statusEmAberto.includes(demanda.status);
     });
 
-    // proximas do prazo: demandas em aberto que vencem de hoje até 7 dias depois.
-    // demandas vencidas, concluídas, canceladas ou sem prazo não entram na lista.
+    // Próximas do prazo: demandas em aberto que vencem de hoje até 7 dias depois
+    // (vencidas, concluídas, canceladas ou sem prazo não entram na lista)
     const hoje = new Date();
     const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 7);
     const dataHoje = formatarData(hoje);
@@ -90,7 +90,7 @@ rotasDashboard.get("/", (req: Request, res: Response) => {
     });
 });
 
-// exemplo de erro para demonstrar um método nao permitido
+// Qualquer outro método em /dashboard (POST, PUT...) responde 405 - método não permitido
 rotasDashboard.all("/", (req: Request, res: Response) => {
     res.set("Allow", "GET, HEAD");
     res.status(405).json({ erro: "Método não permitido. Utilize GET /dashboard." });

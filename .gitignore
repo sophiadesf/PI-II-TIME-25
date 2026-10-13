@@ -1,2 +1,8 @@
+# Arquivos que não vão para o repositório
+# Autor: Pedro Tafner
+
+# Bibliotecas baixadas pelo npm install
 node_modules/
+
+# JavaScript gerado pelo TypeScript (npm start)
 lib/

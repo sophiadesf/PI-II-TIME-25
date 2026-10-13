@@ -1,3 +1,9 @@
+/*
+    JS das telas de Login, Cadastro e Esqueci a Senha (validações dos formulários)
+
+    Autor: Sophia de Souza Fabri
+*/
+
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     // FUNÇÕES AUXILIARES DE VALIDAÇÃO - feito por Sophia Fabri
