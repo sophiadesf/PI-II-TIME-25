@@ -1,5 +1,5 @@
 /*
-    Ponto de entrada do servidor (API do Sistema de Acompanhamento de Demandas)
+    Ponto de entrada do servidor
 
     Autor: Pedro Tafner
 */
@@ -11,6 +11,7 @@ import rotasListagem from "./rotas/listagemDemandas";         // João Felipe Bo
 import rotasDemandas from "./rotas/demandas";                 // Pedro Tafner
 import rotasProjetos from "./rotas/projetos";                 // Pedro Tafner
 import rotasDetalhesDemanda from "./rotas/detalhesdemanda";   // Arthur Cavallaro Paioli
+import { initPool, getConn, closePool } from "./db";
 
 const app = express();
 const PORTA = 3000;
@@ -26,7 +27,64 @@ app.get("/", (req: Request, res: Response) => {
     res.status(200).json({ mensagem: "API do Sistema de Acompanhamento de Demandas ativa" });
 });
 
-// Rotas do sistema
+// GET /banco - testa a conexão com o Oracle pedindo a data e hora atual do banco
+// (DUAL é uma tabela especial do Oracle que sempre existe, então funciona sem nenhuma tabela criada)
+app.get("/banco", async (req: Request, res: Response) => {
+    let conexao;
+
+    try {
+        // Pega uma conexão emprestada do pool
+        conexao = await getConn();
+
+        const resultado = await conexao.execute("SELECT SYSDATE AS DATA_HORA FROM DUAL");
+
+        res.status(200).json({ mensagem: "Conexão com o banco funcionando", banco: resultado.rows });
+    } catch (erro) {
+        console.error("Erro ao acessar o banco:", erro);
+        res.status(500).json({ erro: "Não foi possível acessar o banco de dados." });
+    } finally {
+        // Devolve a conexão para o pool (mesmo se der erro)
+        if (conexao) {
+            await conexao.close();
+        }
+    }
+});
+
+// Liga o servidor: primeiro conecta no banco, depois começa a receber requisições
+async function iniciarServidor() {
+    try {
+        // Prepara o pool de conexões com o Oracle.
+        await initPool();
+
+        // Inicia o servidor HTTP.
+        app.listen(PORTA, () => {
+            console.log(`Servidor ativo na porta ${PORTA}`);
+        });
+
+        // Registra o encerramento ao pressionar Ctrl+C.
+        process.on("SIGINT", encerrarServidor);
+
+        // Registra o encerramento solicitado pelo ambiente.
+        process.on("SIGTERM", encerrarServidor);
+    } catch (erro) {
+        console.error("Falha ao iniciar o servidor:", erro);
+        process.exit(1);
+    }
+}
+
+// Desliga o servidor com segurança, fechando as conexões com o banco
+async function encerrarServidor() {
+    try {
+        await closePool();
+        console.log("Pool de conexões encerrado.");
+        process.exit(0);
+    } catch (erro) {
+        console.error("Falha ao encerrar o pool:", erro);
+        process.exit(1);
+    }
+}
+
+// Rotas do sistema (usa os dados fictícios)
 app.use("/", rotasLogin);                       // POST /login e GET /usuarios
 app.use("/dashboard", rotasDashboard);          // GET /dashboard
 app.use("/demandas", rotasListagem);            // GET /demandas (filtros, busca e ordenação)
@@ -51,6 +109,5 @@ app.use((erro: any, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({ erro: "Erro interno no servidor." });
 });
 
-app.listen(PORTA, () => {
-    console.log(`Servidor ativo na porta ${PORTA}`);
-});
+// Liga o servidor
+iniciarServidor();
