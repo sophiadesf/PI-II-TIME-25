@@ -1,14 +1,7 @@
-
 /*
     JS das telas de Login, Cadastro e Esqueci a Senha.
 
     Autor: Sophia de Souza Fabri
-
-    Responsabilidades:
-    - Validar os formulários;
-    - Integrar o login com a API;
-    - Armazenar os dados do usuário autenticado;
-    - Manter a autenticação durante a navegação.
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // FUNÇÃO PARA MOSTRAR ERROS DA API
+    // FUNÇÕES DE FEEDBACK DA API (ERRO E SUCESSO)
     // ----------------------------------------------------
 
     function mostrarErroGeral(formulario, mensagem) {
@@ -70,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!elemento) {
             elemento = document.createElement('div');
             elemento.id = 'mensagemErroGeral';
+            elemento.className = 'alert alert-danger mt-2';
             elemento.style.color = '#dc3545';
             elemento.style.fontSize = '0.9em';
             elemento.style.marginBottom = '10px';
@@ -80,74 +74,145 @@ document.addEventListener('DOMContentLoaded', () => {
         elemento.textContent = mensagem;
     }
 
+    function mostrarSucessoGeral(formulario, mensagem) {
+        let elemento = document.getElementById('mensagemSucessoGeral');
+
+        if (!elemento) {
+            elemento = document.createElement('div');
+            elemento.id = 'mensagemSucessoGeral';
+            elemento.className = 'alert alert-success mt-2';
+            elemento.style.color = '#198754';
+            elemento.style.fontSize = '0.9em';
+            elemento.style.marginBottom = '10px';
+
+            formulario.prepend(elemento);
+        }
+
+        elemento.textContent = mensagem;
+    }
+
+    function limparMensagens(formulario) {
+        const erro = document.getElementById('mensagemErroGeral');
+        if (erro) erro.remove();
+
+        const sucesso = document.getElementById('mensagemSucessoGeral');
+        if (sucesso) sucesso.remove();
+    }
+
     // ----------------------------------------------------
-    // 1. TELA DE CADASTRO
+    // 1. TELA DE CADASTRO - INTEGRAÇÃO COM A API
     // ----------------------------------------------------
 
     const formCadastro = document.getElementById('formCadastro');
 
     if (formCadastro) {
 
-        formCadastro.addEventListener('submit', (e) => {
+        formCadastro.addEventListener('submit', async (e) => {
 
             e.preventDefault();
+            limparMensagens(formCadastro);
 
             let valido = true;
 
-            const nome = document.getElementById('nome');
-            const email = document.getElementById('email');
-            const senha = document.getElementById('senha');
-            const confirmaSenha = document.getElementById('confirmaSenha');
+            const nomeInput = document.getElementById('nome');
+            const emailInput = document.getElementById('email');
+            const senhaInput = document.getElementById('senha');
+            const confirmaSenhaInput = document.getElementById('confirmaSenha');
+            const botao = formCadastro.querySelector('[type="submit"]');
 
-            if (!nome.value.trim()) {
-                mostrarErro(nome, 'O nome é obrigatório.');
+            if (!nomeInput.value.trim()) {
+                mostrarErro(nomeInput, 'O nome é obrigatório.');
                 valido = false;
-            } else if (nome.value.trim().length < 3) {
-                mostrarErro(nome, 'O nome deve ter pelo menos 3 caracteres.');
+            } else if (nomeInput.value.trim().length < 3) {
+                mostrarErro(nomeInput, 'O nome deve ter pelo menos 3 caracteres.');
                 valido = false;
             } else {
-                limparErro(nome);
+                limparErro(nomeInput);
             }
 
-            if (!email.value.trim()) {
-                mostrarErro(email, 'O e-mail é obrigatório.');
+            if (!emailInput.value.trim()) {
+                mostrarErro(emailInput, 'O e-mail é obrigatório.');
                 valido = false;
-            } else if (!eEmailValido(email.value.trim())) {
-                mostrarErro(email, 'Digite um e-mail válido.');
+            } else if (!eEmailValido(emailInput.value.trim())) {
+                mostrarErro(emailInput, 'Digite um e-mail válido.');
                 valido = false;
             } else {
-                limparErro(email);
+                limparErro(emailInput);
             }
 
-            if (!senha.value) {
-                mostrarErro(senha, 'A senha é obrigatória.');
+            if (!senhaInput.value) {
+                mostrarErro(senhaInput, 'A senha é obrigatória.');
                 valido = false;
-            } else if (!eSenhaForte(senha.value)) {
-                mostrarErro(senha, 'A senha deve ter pelo menos 8 caracteres, letras maiúsculas, minúsculas, números e símbolos.');
+            } else if (!eSenhaForte(senhaInput.value)) {
+                mostrarErro(senhaInput, 'A senha deve ter pelo menos 8 caracteres, letras maiúsculas, minúsculas, números e símbolos.');
                 valido = false;
             } else {
-                limparErro(senha);
+                limparErro(senhaInput);
             }
 
-            if (!confirmaSenha.value) {
-                mostrarErro(confirmaSenha, 'Confirme sua senha.');
+            if (!confirmaSenhaInput.value) {
+                mostrarErro(confirmaSenhaInput, 'Confirme sua senha.');
                 valido = false;
-            } else if (confirmaSenha.value !== senha.value) {
-                mostrarErro(confirmaSenha, 'As senhas não coincidem.');
+            } else if (confirmaSenhaInput.value !== senhaInput.value) {
+                mostrarErro(confirmaSenhaInput, 'As senhas não coincidem.');
                 valido = false;
             } else {
-                limparErro(confirmaSenha);
+                limparErro(confirmaSenhaInput);
             }
 
-            if (valido) {
-                alert('Validações concluídas!');
+            if (!valido) return;
 
-                /*
-                   IMPORTANTE:
-                   O cadastro ainda precisa ser conectado
-                   à rota de cadastro do backend.
-                   Não foi informada a rota dessa operação.
-                */
+            try {
+                if (botao) {
+                    botao.disabled = true;
+                    botao.textContent = 'Cadastrando...';
+                }
+
+                // Envia os dados para a API (POST /usuarios)
+                const resposta = await fetch(`${API_URL}/usuarios`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nome: nomeInput.value.trim(),
+                        email: emailInput.value.trim(),
+                        senha: senhaInput.value
+                    })
+                });
+
+                const resultado = await resposta.json();
+
+                if (!resposta.ok) {
+                    // Exibe a mensagem de erro (400, 409, 500, etc.) na interface
+                    mostrarErroGeral(
+                        formCadastro,
+                        resultado.mensagem || resultado.erro || `Erro no cadastro (${resposta.status}). Tente novamente.`
+                    );
+                    return;
+                }
+
+                mostrarSucessoGeral(formCadastro, 'Cadastro realizado com sucesso! Redirecionando para o login...');
+
+                // Limpa o formulário
+                formCadastro.reset();
+
+                // Redireciona para a página de login após 2 segundos
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+
+            } catch (erro) {
+                console.error('Erro ao realizar cadastro:', erro);
+                mostrarErroGeral(
+                    formCadastro,
+                    'Não foi possível conectar ao servidor. Verifique se a API está em execução.'
+                );
+            } finally {
+                if (botao) {
+                    botao.disabled = false;
+                    botao.textContent = 'Cadastrar';
+                }
             }
 
         });
@@ -164,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formLogin.addEventListener('submit', async (e) => {
 
             e.preventDefault();
+            limparMensagens(formLogin);
 
             let valido = true;
 
@@ -171,20 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const senhaInput = document.getElementById('senha');
             const botao = formLogin.querySelector('[type="submit"]');
 
-            let mensagemErroGeral = document.getElementById('mensagemErroGeral');
-
-            if (!mensagemErroGeral) {
-                mensagemErroGeral = document.createElement('div');
-                mensagemErroGeral.id = 'mensagemErroGeral';
-                mensagemErroGeral.style.color = '#dc3545';
-                mensagemErroGeral.style.marginBottom = '10px';
-
-                formLogin.prepend(mensagemErroGeral);
-            }
-
-            mensagemErroGeral.textContent = '';
-
-            // Validação do e-mail
             if (!emailInput.value.trim()) {
                 mostrarErro(emailInput, 'O e-mail é obrigatório.');
                 valido = false;
@@ -195,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 limparErro(emailInput);
             }
 
-            // Validação da senha
             if (!senhaInput.value) {
                 mostrarErro(senhaInput, 'A senha é obrigatória.');
                 valido = false;
@@ -212,66 +263,56 @@ document.addEventListener('DOMContentLoaded', () => {
                     botao.textContent = 'Entrando...';
                 }
 
-                // Envia e-mail e senha para a API
                 const resposta = await fetch(`${API_URL}/login`, {
                     method: 'POST',
-
                     headers: {
                         'Content-Type': 'application/json'
                     },
-
                     body: JSON.stringify({
                         email: emailInput.value.trim(),
                         senha: senhaInput.value
                     })
                 });
 
-                // Trata a resposta da API
                 const resultado = await resposta.json();
 
                 if (!resposta.ok) {
-
-                    mensagemErroGeral.textContent =
-                        resultado.mensagem ||
-                        resultado.erro ||
-                        'E-mail ou senha incorretos.';
-
+                    mostrarErroGeral(
+                        formLogin,
+                        resultado.mensagem || resultado.erro || `Falha na autenticação (${resposta.status}). Verifique seus dados.`
+                    );
                     return;
                 }
 
-                // Verifica se a API retornou o usuário
                 const usuario = resultado.usuario || resultado;
 
-                if (!usuario || !usuario.id) {
-                    mensagemErroGeral.textContent =
-                        'A API não retornou os dados esperados do usuário.';
+                if (!usuario || (!usuario.id && !usuario.ID)) {
+                    mostrarErroGeral(
+                        formLogin,
+                        'A API não retornou os dados esperados do usuário.'
+                    );
                     return;
                 }
 
-                // Limpa autenticação anterior
                 localStorage.removeItem('usuarioLogado');
                 localStorage.removeItem('token');
 
-                // Armazena o usuário autenticado
-                localStorage.setItem(
-                    'usuarioLogado',
-                    JSON.stringify(usuario)
-                );
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
 
-                // Armazena o token, caso a API utilize JWT
                 if (resultado.token) {
                     localStorage.setItem('token', resultado.token);
                 }
 
-                // Redireciona para o Dashboard
                 window.location.href = '../Dashboard/dashboard.html';
 
             } catch (erro) {
 
                 console.error('Erro ao realizar login:', erro);
 
-                mensagemErroGeral.textContent =
-                    'Não foi possível conectar ao servidor. Verifique se a API está funcionando.';
+                mostrarErroGeral(
+                    formLogin,
+                    'Não foi possível conectar ao servidor. Verifique se a API está funcionando.'
+                );
 
             } finally {
 
