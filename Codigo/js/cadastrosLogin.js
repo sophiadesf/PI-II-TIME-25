@@ -1,5 +1,5 @@
 /*
-    JS das telas de Login, Cadastro e Esqueci a Senha (validações dos formulários)
+    JS das telas de Login, Cadastro e Esqueci a Senha (validações dos formulários e integração com API)
 
     Autor: Sophia de Souza Fabri
 */
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 2. VALIDAÇÃO E ENVIO DA TELA DE LOGIN (COM FETCH)
+    // 2. VALIDAÇÃO E ENVIO DA TELA DE LOGIN (COM FETCH E SESSÃO)
     // ----------------------------------------------------
     const formLogin = document.getElementById('formLogin');
     if (formLogin) {
@@ -112,6 +112,18 @@ document.addEventListener('DOMContentLoaded', () => {
             let valido = true;
             const emailInput = document.getElementById('email');
             const senhaInput = document.getElementById('senha');
+
+            // Criação opcional de um elemento global para erros de requisição se não existir no HTML
+            let mensagemErroGeral = document.getElementById('mensagemErroGeral');
+            if (!mensagemErroGeral) {
+                mensagemErroGeral = document.createElement('div');
+                mensagemErroGeral.id = 'mensagemErroGeral';
+                mensagemErroGeral.style.color = '#dc3545';
+                mensagemErroGeral.style.marginBottom = '10px';
+                mensagemErroGeral.style.fontSize = '0.9em';
+                formLogin.prepend(mensagemErroGeral);
+            }
+            mensagemErroGeral.textContent = '';
 
             if (!emailInput.value.trim()) {
                 mostrarErro(emailInput, 'O e-mail é obrigatório.');
@@ -145,16 +157,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const resultado = await resposta.json();
 
                 if (resposta.ok) {
-                    alert('Login bem-sucedido! Bem-vindo, ' + (resultado.usuario?.nome || 'Utilizador'));
-                    // Redireciona corretamente para o index.html após o login certo
-                    window.location.href = 'index.html';
+                    // Requisito atendido: Salva os dados do usuário autenticado para manter a sessão
+                    localStorage.setItem('usuarioLogado', JSON.stringify(resultado.usuario || resultado));
+
+                    // Redireciona para o Dashboard ou página principal do sistema
+                    window.location.href = '../Dashboard/dashboard.html'; 
                 } else {
-                    // Se estiver errado, exibe o aviso de erro e pede o login novamente
-                    alert('Erro no login: ' + (resultado.erro || 'Credenciais inválidas.'));
+                    // Requisito atendido: Exibe a mensagem de erro retornada pela API diretamente na tela
+                    const mensagemServidor = resultado.mensagem || resultado.erro || 'Credenciais inválidas.';
+                    mensagemErroGeral.textContent = mensagemServidor;
                 }
             } catch (erro) {
                 console.error('Erro de conexão com o servidor:', erro);
-                alert('Não foi possível conectar ao servidor. Verifique se o server.js está a rodar.');
+                mensagemErroGeral.textContent = 'Não foi possível conectar ao servidor. Verifique se a API está rodando.';
             }
         });
     }
@@ -198,4 +213,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-```
