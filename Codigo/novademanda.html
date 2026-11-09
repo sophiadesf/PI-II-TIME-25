@@ -73,22 +73,18 @@
 
                                     <div class="col-12 col-md-4">
                                         <label for="projeto" class="form-label">Projeto Associado*</label>
+                                        <!-- As opções são carregadas do banco pelo novademanda.js (GET /projetos) -->
                                         <select id="projeto" class="form-select" required>
-                                            <option value="">Selecione...</option>
-                                            <option value="Projeto 1">Projeto 1</option>
-                                            <option value="Projeto 2">Projeto 2</option>
-                                            <option value="Projeto 3">Projeto 3</option>
+                                            <option value="">Carregando...</option>
                                         </select>
                                         <div id="erroProjeto" class="invalid-feedback"></div>
                                     </div>
 
                                     <div class="col-12 col-md-4">
                                         <label for="responsavel" class="form-label">Responsável</label>
+                                        <!-- As opções são os membros do projeto escolhido (GET /projetos/:id/usuarios) -->
                                         <select id="responsavel" class="form-select">
-                                            <option value="">Selecione...</option>
-                                            <option value="Responsável 1">Responsável 1</option>
-                                            <option value="Responsável 2">Responsável 2</option>
-                                            <option value="Responsável 3">Responsável 3</option>
+                                            <option value="">Escolha o projeto primeiro</option>
                                         </select>
                                         <div id="erroResponsavel" class="invalid-feedback"></div>
                                     </div>
@@ -104,12 +100,9 @@
                             <button class="nova-demanda mt-4" type="submit">Cadastrar Demanda</button>
                         </form>
 
+                        <!-- Mensagem de sucesso ou de erro depois de enviar para a API -->
                         <section id="painelResultado" class="mt-4 d-none">
-                            <div class="alert alert-success">
-                                Dados validados com sucesso. Nenhuma informação foi enviada ao servidor.
-                            </div>
-                            <h2 class="h4">Objeto convertido em JSON</h2>
-                            <pre id="resultado" class="bg-dark text-light p-3 rounded"></pre>
+                            <div id="mensagemResultado" class="alert"></div>
                         </section>
                     </div>
                 </div>
