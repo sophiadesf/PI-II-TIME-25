@@ -1,82 +1,116 @@
 // Autoria: João Felipe
 
 import express, { Request, Response } from "express";
-import { demandas } from "../dados/dados"; 
+import { getConn } from "../db"; // Importa a função que pega a conexão do pool
 
 const router = express.Router();
 
-// Função auxiliar para garantir que o query param seja sempre um array de strings
 const normalizarArray = (param: any): string[] => {
     if (!param) return [];
     if (Array.isArray(param)) return param.map(String);
+    // Transforma strings separadas por vírgula em array real
+    if (typeof param === 'string') return param.split(',');
     return [String(param)];
 };
 
 // GET /demandas 
-router.get("/", (req: Request, res: Response) => {
-    let resultado = [...demandas]; 
-
+router.get("/", async (req: Request, res: Response) => {
     const statusArray = normalizarArray(req.query.status);
     const prioridadeArray = normalizarArray(req.query.prioridade);
     const tipoArray = normalizarArray(req.query.tipo);
-    const busca = req.query.busca ? String(req.query.busca).toLowerCase() : "";
+    const busca = req.query.busca ? String(req.query.busca).trim() : "";
 
-    // Conta exatamente a quantidade de opções (checkboxes) marcadas, ignorando a busca textual
     const totalFiltros = statusArray.length + prioridadeArray.length + tipoArray.length;
     
-    // Regra 1: Se enviou exatamente 1 filtro, bloqueia
     if (totalFiltros === 1) {
         return res.status(400).json({ error: "É necessário informar pelo menos dois critérios de busca" });
     }
-
-    // Regra 2: A filtragem só ocorre se tiver 2 ou mais filtros selecionados
-    if (totalFiltros >= 2) {
-        if (statusArray.length > 0) {
-            const statusLowerCase = statusArray.map(status => status.toLowerCase());
-            resultado = resultado.filter(demanda => statusLowerCase.includes(demanda.status.toLowerCase()));
-        }
-
-        if (prioridadeArray.length > 0) {
-            const prioridadeLowerCase = prioridadeArray.map(prioridade => prioridade.toLowerCase());
-            resultado = resultado.filter(demanda => prioridadeLowerCase.includes(demanda.prioridade.toLowerCase()));
-        }
-
-        if (tipoArray.length > 0) {
-            const tipoLowerCase = tipoArray.map(tipo => tipo.toLowerCase());
-            resultado = resultado.filter(demanda => tipoLowerCase.includes(demanda.tipo.toLowerCase()));
-        }
+    if (busca && busca.length > 0 && busca.length < 3) {
+        return res.status(400).json({ error: "A busca deve ter no mínimo 3 caracteres" });
     }
 
-    // Regra 3: A busca textual ocorre de forma independente dos checkboxes
-    if (busca) {
-        if (busca.length < 3) {
-            return res.status(400).json({ error: "A busca deve ter no mínimo 3 caracteres" });
+    let conn;
+    try {
+        conn = await getConn(); // Pega a conexão do Oracle
+
+        let baseQuery = `SELECT id_demanda AS id, titulo, descricao, tipo, prioridade, id_responsavel AS responsavel, status FROM demandas`;
+        const condicoes: string[] = [];
+        const bindParams: any[] = [];
+        let bindIndex = 1; // Contador para os marcadores do Oracle (:1, :2, etc)
+
+        // Função auxiliar para montar os IN clauses (:1, :2, :3) dinamicamente
+        const adicionarFiltro = (campoDb: string, arrayValores: string[]) => {
+            if (arrayValores.length > 0) {
+                const marcadores = arrayValores.map(() => `:${bindIndex++}`).join(',');
+                condicoes.push(`LOWER(${campoDb}) IN (${marcadores})`);
+                bindParams.push(...arrayValores.map(v => v.toLowerCase()));
+            }
+        };
+
+        if (totalFiltros >= 2) {
+            adicionarFiltro('status', statusArray);
+            adicionarFiltro('prioridade', prioridadeArray);
+            adicionarFiltro('tipo', tipoArray);
+        }
+
+        if (busca) {
+            // Busca parcial no título OU descrição (ignorando maiúsculas/minúsculas)
+            condicoes.push(`(LOWER(titulo) LIKE LOWER('%' || :${bindIndex} || '%') OR LOWER(descricao) LIKE LOWER('%' || :${bindIndex+1} || '%'))`);
+            bindParams.push(busca, busca);
+            bindIndex += 2;
+        }
+
+        // Se houver condições, adiciona o WHERE na query
+        if (condicoes.length > 0) {
+            baseQuery += ' WHERE ' + condicoes.join(' AND ');
         }
         
-        resultado = resultado.filter(demanda => 
-            demanda.titulo.toLowerCase().includes(busca) || 
-            demanda.descricao.toLowerCase().includes(busca)
-        ); 
+        // Adiciona ordenação padrão
+        baseQuery += ' ORDER BY id DESC';
+
+        // Executa
+        const result = await conn.execute(baseQuery, bindParams);
+        
+        // Retorna as linhas (o OUT_FORMAT_OBJECT no db.ts garante que venha como JSON/Objeto)
+        return res.status(200).json(result.rows);
+
+    } catch (error) {
+        console.error("Erro ao buscar demandas:", error);
+        return res.status(500).json({ error: "Erro interno ao consultar o banco de dados." });
+    } finally {
+        if (conn) {
+            try {
+                await conn.close(); // Devolve a conexão pro pool
+            } catch (err) {
+                console.error("Erro ao fechar conexão:", err);
+            }
+        }
     }
-    
-    return res.status(200).json(resultado);
 });
 
 // GET /demandas/:id
-router.get("/:id", (req: Request, res: Response) => {
+router.get("/:id", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    
-    if (isNaN(id)) {
-        return res.status(400).json({ error: "ID inválido. O ID deve ser um número." });
-    }
+    if (isNaN(id)) return res.status(400).json({ error: "ID inválido." });
 
-    const demanda = demandas.find(demanda => demanda.id === id);
-    
-    if (!demanda) {
-        return res.status(404).json({ error: "Demanda não encontrada" });
-    }
+    let conn;
+    try {
+        conn = await getConn();
+        const result = await conn.execute(
+            `SELECT * FROM demandas WHERE id = :1`,
+            [id]
+        );
 
-    return res.status(200).json(demanda);
+        if (result.rows && result.rows.length > 0) {
+            return res.status(200).json(result.rows[0]);
+        } else {
+            return res.status(404).json({ error: "Demanda não encontrada" });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: "Erro ao consultar banco de dados." });
+    } finally {
+        if (conn) await conn.close();
+    }
 });
 
 export default router;

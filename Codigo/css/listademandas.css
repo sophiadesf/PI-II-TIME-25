@@ -15,9 +15,16 @@
     flex-direction: column;
     padding: 2%;
 
-    p {
-        color: grey;
-    }
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto; 
+}
+
+.cabecalho-ld::-webkit-scrollbar {
+    display: none;
+}
+
+.cabecalho-ld p {
+    color: grey;
 }
 
 
@@ -27,8 +34,31 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: flex-start; /* Mantém os cards alinhados no topo */
     margin: 10px;
     gap: 25px;
+
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto; 
+    padding-right: 10px; 
+}
+
+.listagem::-webkit-scrollbar {
+    width: 8px;
+}
+
+.listagem::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.listagem::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 8px;
+}
+
+.listagem::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
 }
 
 .card-ld {
