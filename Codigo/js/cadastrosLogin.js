@@ -168,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     botao.textContent = 'Cadastrando...';
                 }
 
-                // Envia os dados para a API (POST /usuarios)
                 const resposta = await fetch(`${API_URL}/usuarios`, {
                     method: 'POST',
                     headers: {
@@ -184,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const resultado = await resposta.json();
 
                 if (!resposta.ok) {
-                    // Exibe a mensagem de erro (400, 409, 500, etc.) na interface
                     mostrarErroGeral(
                         formCadastro,
                         resultado.mensagem || resultado.erro || `Erro no cadastro (${resposta.status}). Tente novamente.`
@@ -194,10 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 mostrarSucessoGeral(formCadastro, 'Cadastro realizado com sucesso! Redirecionando para o login...');
 
-                // Limpa o formulário
                 formCadastro.reset();
 
-                // Redireciona para a página de login após 2 segundos
                 setTimeout(() => {
                     window.location.href = 'login.html';
                 }, 2000);
@@ -219,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 2. TELA DE LOGIN - INTEGRAÇÃO COM A API
+    // 2. TELA DE LOGIN - INTEGRAÇÃO COM A API (CORRIGIDA)
     // ----------------------------------------------------
 
     const formLogin = document.getElementById('formLogin');
@@ -297,13 +293,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem('usuarioLogado');
                 localStorage.removeItem('token');
 
+                // Salva a sessão do usuário logado
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
 
                 if (resultado.token) {
                     localStorage.setItem('token', resultado.token);
                 }
 
-                window.location.href = '../Dashboard/dashboard.html';
+                // CORREÇÃO: Redireciona para index.html conforme exigido pelo projeto
+                window.location.href = 'index.html';
 
             } catch (erro) {
 
@@ -336,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formEsqueciSenha) {
 
         formEsqueciSenha.addEventListener('submit', (e) => {
+            e.preventDefault();
 
             let valido = true;
 
@@ -353,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (novaSenha) {
-
                 if (!novaSenha.value) {
                     mostrarErro(novaSenha, 'A nova senha é obrigatória.');
                     valido = false;
@@ -363,13 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     limparErro(novaSenha);
                 }
-
             }
 
-            if (!valido) {
-                e.preventDefault();
-            }
+            if (!valido) return;
 
+            mostrarSucessoGeral(formEsqueciSenha, 'Instruções enviadas com sucesso!');
         });
 
     }
