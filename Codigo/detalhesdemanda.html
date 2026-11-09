@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+    Tela de Detalhes da Demanda
+
+    Autor: Arthur Cavallaro Paioli
+-->
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Demandas</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/detalhesdemanda.css">
+        <script src="js/layout.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+
+        <!-- Tipografia definida - Inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="topbar"></div>
+        <div class="layout">
+            <div id="menu"></div>
+            <div class="main-dd">
+            <div class="cabecalho-dd">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="listademandas.html">Demandas</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+                </ol>
+                </nav>
+                <h3>Detalhes de Demanda</h3>
+            </div>
+            
+            <div class="dashboard-grid-dd">
+                
+                <div class="card-detalhes">
+                    <table class="tabela-dd">
+                        <tbody>
+                        <tr>
+                            <td class="col-campo">Título</td>
+                            <td class="col-valor"><span id="textoTitulo">Criação de API de Autenticação</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Tipo</td>
+                            <td class="col-valor"><span id="textoTipo">Nova Funcionalidade</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Prioridade</td>
+                            <td class="col-valor"><span id="textoPrioridade" class="tag-prioridade high">Alta</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Status</td>
+                            <td class="col-valor"><span id="status">Análise</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Projeto</td>
+                            <td class="col-valor"><span id="textoProjeto">Portal do Cliente</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Responsável</td>
+                            <td class="col-valor"><span id="textoResponsavel">João Silva</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Data de criação</td>
+                            <td class="col-valor"><span id="textoDataCriacao">-</span></td>
+                        </tr>
+                        <tr>
+                            <td class="col-campo">Prazo de finalização</td>
+                            <td class="col-valor"><span id="textoPrazo">31/12/2026</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="acoes-tabela">
+                        <button onclick="abrir()" type="button" id="botao-sec" class="btn btn-secondary btn-sm shadow-sm">Alterar status</button>
+                        <button onclick="ativarEdicao()" type="button" id="botao-pri" class="btn btn-primary btn-sm shadow-sm">Editar demanda</button>
+                    </div>
+                </div>
+        
+
+                <div class="coluna-atividade-dd">
+                <div class="card-historico">
+                    <h4>Histórico de Alterações</h4>
+                    <div id="historicoTimeline" class="historico-timeline">
+                        <div class="historico-item">
+                            <span class="historico-data">05/10/2026 - 14:30</span>
+                            <p>Status alterado de <strong>Análise</strong> para <strong>Desenvolvimento</strong>.</p>
+                        </div>
+                        <div class="historico-item">
+                            <span class="historico-data">01/10/2026 - 09:00</span>
+                            <p>Demanda criada por <strong>João Silva</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-comentarios">
+                    <div class="cabecalho-comentarios">
+                        <h4>Comentários</h4>
+                        <button type="button" id="botaoAdicionarComentario" class="btn btn-primary btn-sm">Adicionar comentário</button>
+                    </div>
+                    <div id="listaComentarios" class="lista-comentarios">
+                        <p class="mensagem-comentarios">Carregando comentários...</p>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="fundoCinza"></div>
+        <div id="alterar_status">
+
+            <h3>Escolha uma opção abaixo</h3>
+            <select id = "novo_status" class="form-select" aria-label="Default select example">
+                <option value="Aberta">Aberta</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Em revisao">Em revisão</option>
+                <option value="Concluida">Concluída</option>
+                <option value="Cancelada">Cancelada</option>
+            </select>
+            <button onclick="salvarStatus()" type="button" id="confirmar">Confirmar</button>
+        </div>
+        <div id="caixaComentario" class="caixa-comentario">
+            <h3>Adicionar comentário</h3>
+            <textarea id="textoComentario" class="form-control" rows="5" placeholder="Escreva seu comentário..."></textarea>
+            <div class="acoes-comentario">
+                <button type="button" id="cancelarComentario" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button type="button" id="publicarComentario" class="btn btn-primary btn-sm">Publicar comentário</button>
+            </div>
+        </div>
+        <script src="js/detalhesd.js"></script>
+    </body>
+</html>

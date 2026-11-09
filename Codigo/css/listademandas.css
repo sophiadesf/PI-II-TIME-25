@@ -1,0 +1,117 @@
+/*
+    Estilos da tela de Listagem de Demandas
+
+    Autor: João Felipe Bodo Pinheiro
+*/
+
+.main-ld {
+    display: flex;
+}
+
+.cabecalho-ld {
+    width: 350px;
+    margin: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto; 
+}
+
+.cabecalho-ld::-webkit-scrollbar {
+    display: none;
+}
+
+.cabecalho-ld p {
+    color: grey;
+}
+
+
+.listagem {
+    padding-top: 5%;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start; /* Mantém os cards alinhados no topo */
+    margin: 10px;
+    gap: 25px;
+
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto; 
+    padding-right: 10px; 
+}
+
+.listagem::-webkit-scrollbar {
+    width: 8px;
+}
+
+.listagem::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.listagem::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 8px;
+}
+
+.listagem::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.card-ld {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 330px;
+    padding: 15px;
+
+    background-color: white ;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.detalhes-ld {
+    width: 42px;
+    height: 38px ;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.pesquisa {
+    padding-bottom: 5%;
+}
+
+.btn-filtro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 100%;
+    gap: 2%;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+}
+
+.btn-pesquisa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 100%;
+    gap: 2%;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+}

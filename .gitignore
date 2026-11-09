@@ -1,0 +1,11 @@
+# Arquivos que não vão para o repositório
+# Autor: Pedro Tafner
+
+# Bibliotecas baixadas pelo npm install
+node_modules/
+
+# JavaScript gerado pelo TypeScript (npm start)
+lib/
+
+# Credenciais do banco de dados (cada aluno tem as suas, nunca vai para o GitHub)
+.env
