@@ -4,6 +4,7 @@
     Autor: Pedro Tafner
 */
 
+import cors from 'cors';
 import express, { Request, Response, NextFunction } from "express";
 import rotasLogin from "./rotas/login";                       // Sophia de Souza Fabri
 import rotasDashboard from "./rotas/dashboard";               // Sophia Dalla Bernardita Lopes
@@ -16,7 +17,8 @@ import { initPool, getConn, closePool } from "./db";
 const app = express();
 const PORTA = 3000;
 
-// Permite que a API receba o corpo das requisições POST em formato JSON
+// Permite que a API receba o corpo das requisições POST em formato JSON e use o CORS
+app.use(cors());
 app.use(express.json());
 
 // Deixa o JSON das respostas formatado (com quebra de linha e recuo de 2 espaços)
