@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <td class="col-campo">Prioridade</td>
-                            <td class="col-valor"><span class="tag-prioridade high">Alta</span></td>
+                            <td class="col-valor"><span id="textoPrioridade" class="tag-prioridade high">Alta</span></td>
                         </tr>
                         <tr>
                             <td class="col-campo">Status</td>
@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td class="col-campo">Data de criação</td>
-                            <td class="col-valor">01/10/2026</td>
+                            <td class="col-valor"><span id="textoDataCriacao">-</span></td>
                         </tr>
                         <tr>
                             <td class="col-campo">Prazo de finalização</td>
@@ -82,6 +82,7 @@
                 </div>
         
 
+                <div class="coluna-atividade-dd">
                 <div class="card-historico">
                     <h4>Histórico de Alterações</h4>
                     <div id="historicoTimeline" class="historico-timeline">
@@ -96,6 +97,17 @@
                     </div>
                 </div>
 
+                <div class="card-comentarios">
+                    <div class="cabecalho-comentarios">
+                        <h4>Comentários</h4>
+                        <button type="button" id="botaoAdicionarComentario" class="btn btn-primary btn-sm">Adicionar comentário</button>
+                    </div>
+                    <div id="listaComentarios" class="lista-comentarios">
+                        <p class="mensagem-comentarios">Carregando comentários...</p>
+                    </div>
+                </div>
+                </div>
+
             </div>
         </div>
         <div id="fundoCinza"></div>
@@ -103,11 +115,21 @@
 
             <h3>Escolha uma opção abaixo</h3>
             <select id = "novo_status" class="form-select" aria-label="Default select example">
-                <option value="1">Desenvolivmento</option>
-                <option value="2">Análise</option>
-                <option value="3">Aderência</option>
+                <option value="Aberta">Aberta</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Em revisao">Em revisão</option>
+                <option value="Concluida">Concluída</option>
+                <option value="Cancelada">Cancelada</option>
             </select>
             <button onclick="salvarStatus()" type="button" id="confirmar">Confirmar</button>
+        </div>
+        <div id="caixaComentario" class="caixa-comentario">
+            <h3>Adicionar comentário</h3>
+            <textarea id="textoComentario" class="form-control" rows="5" placeholder="Escreva seu comentário..."></textarea>
+            <div class="acoes-comentario">
+                <button type="button" id="cancelarComentario" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button type="button" id="publicarComentario" class="btn btn-primary btn-sm">Publicar comentário</button>
+            </div>
         </div>
         <script src="js/detalhesd.js"></script>
     </body>

@@ -91,13 +91,29 @@ router.get("/", async (req: Request, res: Response) => {
 // GET /demandas/:id
 router.get("/:id", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    if (isNaN(id)) return res.status(400).json({ error: "ID inválido." });
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ error: "ID inválido." });
+    }
 
     let conn;
     try {
         conn = await getConn();
         const result = await conn.execute(
-            `SELECT * FROM demandas WHERE id = :1`,
+            `SELECT D.ID_DEMANDA AS "id",
+                    D.TITULO AS "titulo",
+                    D.DESCRICAO AS "descricao",
+                    D.TIPO AS "tipo",
+                    D.PRIORIDADE AS "prioridade",
+                    D.STATUS AS "status",
+                    P.NOME AS "projeto",
+                    R.NOME AS "responsavel",
+                    D.PRAZO_FINALIZACAO AS "prazo",
+                    D.DATA_CRIACAO AS "dataCriacao",
+                    D.DATA_ATUALIZACAO AS "dataAtualizacao"
+               FROM DEMANDAS D
+               JOIN PROJETOS P ON P.ID_PROJETO = D.ID_PROJETO
+               LEFT JOIN USUARIOS R ON R.ID_USUARIO = D.ID_RESPONSAVEL
+              WHERE D.ID_DEMANDA = :1`,
             [id]
         );
 
@@ -107,9 +123,16 @@ router.get("/:id", async (req: Request, res: Response) => {
             return res.status(404).json({ error: "Demanda não encontrada" });
         }
     } catch (error) {
+        console.error("Erro ao consultar demanda:", error);
         return res.status(500).json({ error: "Erro ao consultar banco de dados." });
     } finally {
-        if (conn) await conn.close();
+        if (conn) {
+            try {
+                await conn.close();
+            } catch (error) {
+                console.error("Erro ao fechar conexão:", error);
+            }
+        }
     }
 });
 
