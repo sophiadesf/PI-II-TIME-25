@@ -7,7 +7,7 @@
 - Arthur Cavallaro Paioli  
 - João Felipe Bodo Pinheiro 
 - Pedro Henrique Tafner Reck 
-- Sophia Dalla Bernardita Lopes
+- Sophia Dalla Bernardina Lopes
 - Sophia de Souza Fabri
 
 --------------------------------------------

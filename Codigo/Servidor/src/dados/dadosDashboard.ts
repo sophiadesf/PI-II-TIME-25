@@ -1,7 +1,7 @@
 /*
     Dados de teste adicionais para o dashboard
 
-    Autor: Sophia Dalla Bernardita Lopes
+    Autor: Sophia Dalla Bernardina Lopes
 */
 
 import { Demanda } from "./dados";

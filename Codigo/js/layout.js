@@ -1,7 +1,7 @@
 /*
     JS que carrega o menu e a barra superior em todas as telas
 
-    Autor: Sophia Dalla Bernardita Lopes
+    Autor: Sophia Dalla Bernardina Lopes
 */
 
 const titulos = {

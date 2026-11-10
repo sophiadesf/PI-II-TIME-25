@@ -7,7 +7,7 @@
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from "express";
 import rotasLogin from "./rotas/login";                       // Sophia de Souza Fabri
-import rotasDashboard from "./rotas/dashboard";               // Sophia Dalla Bernardita Lopes
+import rotasDashboard from "./rotas/dashboard";               // Sophia Dalla Bernardina Lopes
 import rotasListagem from "./rotas/listagemDemandas";         // João Felipe Bodo Pinheiro
 import rotasDemandas from "./rotas/demandas";                 // Pedro Tafner
 import rotasProjetos from "./rotas/projetos";                 // Pedro Tafner
