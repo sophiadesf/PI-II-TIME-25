@@ -44,3 +44,46 @@ fetch("menu.html")
             }
         });
     });
+
+    
+function pegarIdUsuarioLogado() {
+    const usuarioSalvo = localStorage.getItem("usuarioLogado");
+
+    if (!usuarioSalvo) {
+        return null;
+    }
+
+    try {
+        const usuario = JSON.parse(usuarioSalvo);
+        return usuario.id || usuario.ID || null;
+    } catch (erro) {
+        return null;
+    }
+}
+
+function protegerPagina() {
+    const pagina = window.location.pathname.split("/").pop();
+
+    // Páginas que podem ser acessadas sem login
+    const paginasPublicas = [
+        "login.html",
+        "cadastro.html",
+        "esqueci-senha.html"
+    ];
+
+    const usuarioId = pegarIdUsuarioLogado();
+
+    // Se não estiver logado e tentar acessar uma página privada
+    if (!usuarioId && !paginasPublicas.includes(pagina)) {
+        window.location.replace("login.html");
+        return;
+    }
+
+    // Se já estiver logado e tentar acessar o login ou cadastro
+    if (usuarioId && paginasPublicas.includes(pagina)) {
+        window.location.replace("index.html");
+    }
+}
+
+// Executa a proteção assim que o arquivo for carregado
+protegerPagina();
