@@ -5,7 +5,7 @@
 */
 
 import { Router, Request, Response } from "express";
-import { usuarios, Usuario } from "../dados/dados";
+import { usuarios, Usuario } from "./dados/dados";
 
 const rotasLogin = Router();
 
