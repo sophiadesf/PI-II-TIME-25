@@ -476,3 +476,100 @@ td {
     color: #46525a;
     line-height: 1.4;
 }
+
+/* Estilização dos gráficos do Dashboard */
+/* Gráfico de fluxo semanal */
+.grafico-fluxo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.barra-semana {
+    display: grid;
+    grid-template-columns: 55px 1fr;
+    gap: 6px;
+    align-items: center;
+}
+
+.barra-semana strong {
+    grid-row: span 2;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.barra {
+    min-width: 20px;
+    min-height: 22px;
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: white;
+    transition: width 0.3s ease;
+}
+
+.barra.abertas {
+    background-color: #3b82f6;
+}
+
+.barra.concluidas {
+    background-color: #10b981;
+}
+
+.legenda-grafico {
+    display: flex;
+    gap: 18px;
+    margin-top: 15px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Distribuição por status */
+.grafico-distribuicao {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.distribuicao-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5px 12px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.distribuicao-item strong {
+    color: #1e293b;
+}
+
+.barra-fundo {
+    grid-column: 1 / -1;
+    height: 9px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.barra-status {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* Mensagem de erro */
+#mensagemErro {
+    margin-bottom: 20px;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+    .grafico-fluxo {
+        gap: 15px;
+    }
+    .barra-semana {
+        grid-template-columns: 45px 1fr;
+    }
+}

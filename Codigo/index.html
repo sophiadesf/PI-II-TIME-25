@@ -30,6 +30,9 @@
             <!-- Conteudo do Dashboard -->
             <div class="main">
                 <div class="content">
+                    <!-- Mensagens de erro retornadas pela API -->
+                    <div id="mensagemErro" class="alert alert-danger" style="display: none;" role="alert"></div>
+
                     <!-- Cabeçalho do dashboard -->
                     <div class="cabecalho-div">
                         <div>
@@ -78,7 +81,14 @@
                                 </div>
                                 <button class="period">Últimas 8 semanas</button>
                             </div>
-                            <small>Área separada para gráfico</small>
+
+                            <!-- Gráfico de demandas abertas e concluídas -->
+                            <div id="graficoFluxo" class="grafico-fluxo"></div>
+
+                            <div class="legenda-grafico">
+                                <span>■ Abertas</span>
+                                <span>■ Concluídas</span>
+                            </div>
                         </div>
                         <div class="panel distribution">
                             <div class="panel-div">
@@ -87,7 +97,8 @@
                                     <p>71 demandas em andamento no momento</p>
                                 </div>
                             </div>
-                            <small>Área separada para gráfico</small>
+                            <!-- Distribuição das demandas por status -->
+                            <div id="graficoDistribuicao" class="grafico-distribuicao"></div>
                         </div>
                     </div>
 
@@ -108,40 +119,8 @@
                                     <th>Prioridade</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#01</td>
-                                    <td>Implementar tela de login</td>
-                                    <td>João Silva</td>
-                                    <td>
-                                        <span class="status development-status">Desenvolvimento</span>
-                                    </td>
-                                    <td>
-                                        <span class="priority high">Alta</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#02</td>
-                                    <td>Correção no cadastro de clientes</td>
-                                    <td>Maria Santos</td>
-                                    <td>
-                                        <span class="status analysis-status">Em análise</span>
-                                    </td>
-                                    <td>
-                                        <span class="priority medium">Média</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#03</td>
-                                    <td>Melhoria no relatório financeiro</td>
-                                    <td>Lucas Oliveira</td>
-                                    <td>
-                                        <span class="status review-status">Em revisão</span>
-                                    </td>
-                                    <td>
-                                        <span class="priority low">Baixa</span>
-                                    </td>
-                                </tr>
+                            <tbody id="tabelaRecentes">
+                                <!-- Os registros serão carregados pela API -->
                             </tbody>
                         </table>
                     </div>

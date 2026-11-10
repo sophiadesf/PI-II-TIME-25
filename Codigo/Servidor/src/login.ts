@@ -4,7 +4,7 @@
 */
 
 import { Router, Request, Response } from 'express';
-import { getConn } from '../db'; // Importa a conexão com o Oracle configurada no projeto
+import { getConn } from './db'; // Importa a conexão com o Oracle configurada no projeto
 
 const router = Router();
 
@@ -28,7 +28,13 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
             [email]
         );
 
-        const usuario = resultado.rows[0];
+        const usuario = resultado.rows?.[0] as {
+            ID: number;
+            NOME: string;
+            EMAIL: string;
+            SENHA: string;
+            PERFIL: string;
+        } | undefined;
 
         // 3. Se o usuário não existir no banco
         if (!usuario) {
@@ -38,11 +44,11 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 
         // Como o Oracle pode retornar as chaves em maiúsculas (dependendo de como foi criado), 
         // mapeamos as propriedades de forma segura:
-        const senhaBanco = usuario.SENHA || usuario.senha;
-        const idUsuario = usuario.ID || usuario.id;
-        const nomeUsuario = usuario.NOME || usuario.nome;
-        const emailUsuario = usuario.EMAIL || usuario.email;
-        const perfilUsuario = usuario.PERFIL || usuario.perfil;
+        const senhaBanco = usuario.SENHA || usuario.SENHA;
+        const idUsuario = usuario.ID || usuario.ID;
+        const nomeUsuario = usuario.NOME || usuario.NOME;
+        const emailUsuario = usuario.EMAIL || usuario.EMAIL;
+        const perfilUsuario = usuario.PERFIL || usuario.PERFIL;
 
         // 4. Validação da senha
         if (senha !== senhaBanco) {

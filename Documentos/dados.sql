@@ -3,18 +3,18 @@
 -- ==========================================================
 -- 1. INSERINDO USUÁRIOS (dados.ts e dadosListagem.ts)
 -- ==========================================================
-INSERT INTO USUARIOS (ID_USUARIO, NOME, EMAIL, SENHA, PERFIL) 
-VALUES (1, 'Ana Souza', 'ana@empresa.com', 'Admin@123', 'Administrador');
+INSERT INTO USUARIOS (NOME, EMAIL, SENHA, PERFIL) 
+VALUES ('Ana Souza', 'ana@empresa.com', 'Admin@123', 'Administrador');
 
 -- Ajustado de "Líder de Projeto" para "Lider de Projeto" devido à Check Constraint
-INSERT INTO USUARIOS (ID_USUARIO, NOME, EMAIL, SENHA, PERFIL) 
-VALUES (2, 'Bruno Lima', 'bruno@empresa.com', 'Lider@123', 'Lider de Projeto');
+INSERT INTO USUARIOS (NOME, EMAIL, SENHA, PERFIL) 
+VALUES ('Bruno Lima', 'bruno@empresa.com', 'Lider@123', 'Lider de Projeto');
 
-INSERT INTO USUARIOS (ID_USUARIO, NOME, EMAIL, SENHA, PERFIL) 
-VALUES (3, 'Carla Mendes', 'carla@empresa.com', 'Membro@123', 'Membro da Equipe');
+INSERT INTO USUARIOS (NOME, EMAIL, SENHA, PERFIL) 
+VALUES ('Carla Mendes', 'carla@empresa.com', 'Membro@123', 'Membro da Equipe');
 
-INSERT INTO USUARIOS (ID_USUARIO, NOME, EMAIL, SENHA, PERFIL) 
-VALUES (4, 'Carlos Pinheiro', 'carlos@empresa.com', 'Membro@123', 'Membro da Equipe');
+INSERT INTO USUARIOS (NOME, EMAIL, SENHA, PERFIL) 
+VALUES ('Carlos Pinheiro', 'carlos@empresa.com', 'Membro@123', 'Membro da Equipe');
 
 -- ==========================================================
 -- 2. INSERINDO PROJETOS (dados.ts e dadosListagem.ts)
