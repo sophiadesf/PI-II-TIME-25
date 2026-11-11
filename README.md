@@ -37,7 +37,7 @@ Nesta etapa do projeto, a aplicação conta com:
 
 As seguintes ferramentas e tecnologias foram utilizadas no desenvolvimento do projeto:
 
-- **Frontend:** HTML5, CSS3, JavaScript
+- **Frontend:** HTML5, CSS, JavaScript
 - **Backend:** 
   - [Node.js](https://nodejs.org/) (Ambiente de execução JavaScript)
   - [Express](https://expressjs.com/) (Framework web)
