@@ -39,9 +39,9 @@ As seguintes ferramentas e tecnologias foram utilizadas no desenvolvimento do pr
 
 - **Frontend:** HTML5, CSS, JavaScript
 - **Backend:** 
-  - [Node.js](https://nodejs.org/) (Ambiente de execução JavaScript)
-  - [Express](https://expressjs.com/) (Framework web)
-  - [TypeScript](https://www.typescriptlang.org/) (Superset JavaScript tipado)
+  - Node.js (Ambiente de execução JavaScript)
+  - Express (Framework web)
+  - TypeScript (Superset JavaScript tipado)
 - **Ferramentas de Apoio:** Git, GitHub, ts-node-dev
 
 ---
