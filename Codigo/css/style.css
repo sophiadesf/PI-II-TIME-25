@@ -573,3 +573,190 @@ td {
         grid-template-columns: 45px 1fr;
     }
 }
+
+
+/* =========================================================
+   Estilos da Tela de Login (Sophia de Souza Fabri)
+   ========================================================= */
+
+body.login-page {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f4f6f8;
+}
+
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Lado Esquerdo - Fundo escuro com degradê nas cores do sistema */
+.login-left {
+    flex: 1;
+    background: linear-gradient(155deg, #1E3D58 0%, #141C31 100%);
+    color: #ffffff;
+    padding: 48px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-brand .logo-icon {
+    background-color: #3C6F9B;
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.login-brand .brand-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.login-hero {
+    max-width: 460px;
+    margin-bottom: 24px;
+}
+
+.login-hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    color: #ffffff;
+}
+
+.login-hero p {
+    font-size: 15px;
+    color: #91a4b2;
+    margin: 0;
+}
+
+/* Lado Direito - Área do formulário */
+.login-right {
+    flex: 1;
+    background-color: #f4f6f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+.login-form-container {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-form-container h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #141C31;
+    margin-bottom: 4px;
+}
+
+.login-form-container .subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 28px;
+}
+
+.login-form-container label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #46525a;
+    margin-bottom: 6px;
+}
+
+.login-input {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 14px;
+    color: #17202a;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-input:focus {
+    border-color: #3C6F9B;
+    box-shadow: 0 0 0 3px rgba(60, 111, 155, 0.15);
+    outline: none;
+}
+
+.btn-login {
+    background-color: #3C6F9B;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+    background-color: #1E3D58;
+    color: #ffffff;
+}
+
+.login-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #8a949b;
+}
+
+.login-actions a {
+    color: #3C6F9B;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-actions a:hover {
+    text-decoration: underline;
+    color: #141C31;
+}
+
+/* Responsividade para celulares e tablets */
+@media (max-width: 900px) {
+    body.login-page {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .login-wrapper {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .login-left {
+        padding: 32px 24px;
+        gap: 32px;
+    }
+
+    .login-hero h1 {
+        font-size: 26px;
+    }
+
+    .login-right {
+        padding: 40px 24px;
+    }
+}
