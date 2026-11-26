@@ -9,7 +9,17 @@
 // Endereço da API (servidor Node.js)
 const API_URL = "http://localhost:3000";
 
+// Perfis que podem cadastrar demandas (Documento de Visão, item 2.1)
+// Os valores vêm do banco SEM acento ("Lider de Projeto")
+const PERFIS_QUE_CADASTRAM = ["Administrador", "Lider de Projeto"];
+
+// Tamanho máximo dos textos (o mesmo limite das colunas da tabela DEMANDAS)
+const TAMANHO_MAXIMO_TITULO = 150;
+const TAMANHO_MAXIMO_DESCRICAO = 2000;
+
 const formulario = document.querySelector("#formDemanda");
+const botaoCadastrar = formulario.querySelector('button[type="submit"]');
+const avisoPermissao = document.querySelector("#avisoPermissao");
 
 const campoTitulo = document.querySelector("#titulo");
 const campoDescricao = document.querySelector("#descricao");
@@ -93,6 +103,17 @@ function mostrarResultado(sucesso, mensagens) {
     painelResultado.classList.remove("d-none");
 }
 
+// Mostra a mensagem de sucesso com um link para abrir a demanda que acabou de ser criada
+function mostrarSucesso(demanda) {
+    mostrarResultado(true, `Demanda nº ${demanda.id} cadastrada com sucesso no projeto ${demanda.nomeProjeto}! `);
+
+    const link = document.createElement("a");
+    link.href = `detalhesdemanda.html?id=${demanda.id}`;
+    link.className = "alert-link";
+    link.textContent = "Ver detalhes da demanda";
+    mensagemResultado.appendChild(link);
+}
+
 // Coloca as opções em um select (lista de { id, nome })
 function preencherSelect(select, opcoes, textoPrimeiraOpcao) {
     select.innerHTML = "";
@@ -111,8 +132,8 @@ function preencherSelect(select, opcoes, textoPrimeiraOpcao) {
 }
 
 // Pega o usuário que fez login (guardado pela tela de login no localStorage)
-// Devolve o id do usuário ou null se ninguém estiver logado
-function pegarIdUsuarioLogado() {
+// Devolve o objeto do usuário ({ id, nome, perfil, ... }) ou null se ninguém estiver logado
+function pegarUsuarioLogado() {
     const usuarioSalvo = localStorage.getItem("usuarioLogado");
 
     if (!usuarioSalvo) {
@@ -121,20 +142,53 @@ function pegarIdUsuarioLogado() {
 
     try {
         const usuario = JSON.parse(usuarioSalvo);
-        return usuario.id || usuario.ID || null;
+        const id = usuario.id || usuario.ID;
+
+        if (!id) {
+            return null;
+        }
+
+        return { id: id, nome: usuario.nome || usuario.NOME, perfil: usuario.perfil || usuario.PERFIL };
     } catch (erro) {
         return null;
     }
 }
 
-// Busca os projetos no banco (GET /projetos) e coloca no select de projeto
-async function carregarProjetos() {
+// Lê a resposta da API como JSON (se a resposta não for JSON, devolve um objeto vazio)
+async function lerJson(resposta) {
     try {
-        const resposta = await fetch(`${API_URL}/projetos`);
-        const projetos = await resposta.json();
+        return await resposta.json();
+    } catch (erro) {
+        return {};
+    }
+}
+
+// Data de hoje no mesmo formato do campo de data (AAAA-MM-DD), para poder comparar
+function dataDeHoje() {
+    const hoje = new Date();
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoje.getDate()).padStart(2, "0");
+
+    return `${hoje.getFullYear()}-${mes}-${dia}`;
+}
+
+// Busca no banco (GET /projetos) os projetos em que o usuário pode cadastrar demandas
+// e coloca no select de projeto (o Administrador vê todos; o Líder só os projetos dele)
+async function carregarProjetos(idUsuario) {
+    try {
+        const resposta = await fetch(`${API_URL}/projetos?idUsuario=${idUsuario}`);
+        const projetos = await lerJson(resposta);
 
         if (!resposta.ok) {
-            throw new Error(projetos.erro);
+            preencherSelect(campoProjeto, [], "Erro ao carregar");
+            mostrarResultado(false, projetos.erro || `Não foi possível carregar os projetos (erro ${resposta.status}).`);
+            return;
+        }
+
+        if (projetos.length === 0) {
+            preencherSelect(campoProjeto, [], "Nenhum projeto disponível");
+            mostrarResultado(false, "Você não está vinculado a nenhum projeto, então não é possível cadastrar demandas.");
+            return;
         }
 
         preencherSelect(campoProjeto, projetos, "Selecione...");
@@ -153,7 +207,7 @@ async function carregarResponsaveis(idProjeto) {
 
     try {
         const resposta = await fetch(`${API_URL}/projetos/${idProjeto}/usuarios`);
-        const usuarios = await resposta.json();
+        const usuarios = await lerJson(resposta);
 
         if (!resposta.ok) {
             throw new Error(usuarios.erro);
@@ -165,13 +219,46 @@ async function carregarResponsaveis(idProjeto) {
     }
 }
 
-// Quando trocar o projeto, atualiza a lista de responsáveis
-campoProjeto.addEventListener("change", function () {
-    carregarResponsaveis(campoProjeto.value);
-});
+// Mostra os erros de validação devolvidos pela API (status 400)
+// Os erros sobre o prazo (data passada, feriado nacional) também ficam marcados no próprio campo
+function mostrarErrosDaApi(erros) {
+    const errosDoPrazo = erros.filter(function (mensagem) {
+        return mensagem.toLowerCase().includes("prazo");
+    });
 
-// Carrega os projetos assim que a página abre
-carregarProjetos();
+    if (errosDoPrazo.length > 0) {
+        mostrarErro(campoPrazo, erroPrazo, errosDoPrazo.join(" "));
+    }
+
+    mostrarResultado(false, erros);
+}
+
+// ---------- Ao abrir a página ----------
+
+const usuarioLogado = pegarUsuarioLogado();
+
+if (usuarioLogado === null) {
+    // Sem login (o layout.js já manda para a tela de login, isso é só por garantia)
+    formulario.classList.add("d-none");
+    avisoPermissao.textContent = "Você precisa fazer login para cadastrar uma demanda.";
+    avisoPermissao.classList.remove("d-none");
+} else if (!PERFIS_QUE_CADASTRAM.includes(usuarioLogado.perfil)) {
+    // Membro da Equipe não pode criar demandas: esconde o formulário e explica o motivo
+    formulario.classList.add("d-none");
+    avisoPermissao.textContent = `Seu perfil (${usuarioLogado.perfil || "sem perfil"}) não tem permissão para cadastrar demandas. Apenas Administradores e Líderes de Projeto podem cadastrar.`;
+    avisoPermissao.classList.remove("d-none");
+} else {
+    // Não deixa escolher no calendário uma data que já passou
+    campoPrazo.min = dataDeHoje();
+
+    // Quando trocar o projeto, atualiza a lista de responsáveis
+    campoProjeto.addEventListener("change", function () {
+        carregarResponsaveis(campoProjeto.value);
+    });
+
+    // Carrega os projetos assim que a página abre
+    carregarProjetos(usuarioLogado.id);
+}
 
 
 formulario.addEventListener("submit", async function(event){
@@ -192,11 +279,17 @@ formulario.addEventListener("submit", async function(event){
     if(titulo === ""){
         mostrarErro(campoTitulo,erroTitulo,"Escreva o título da demanda.");
         formValido=false;
+    }else if(titulo.length > TAMANHO_MAXIMO_TITULO){
+        mostrarErro(campoTitulo,erroTitulo,`O título pode ter no máximo ${TAMANHO_MAXIMO_TITULO} caracteres.`);
+        formValido=false;
     }
 
     //Validar Descrição
     if(descricao === ""){
         mostrarErro(campoDescricao,erroDescricao,"Escreva a descrição da demanda.");
+        formValido=false;
+    }else if(descricao.length > TAMANHO_MAXIMO_DESCRICAO){
+        mostrarErro(campoDescricao,erroDescricao,`A descrição pode ter no máximo ${TAMANHO_MAXIMO_DESCRICAO} caracteres.`);
         formValido=false;
     }
 
@@ -218,36 +311,28 @@ formulario.addEventListener("submit", async function(event){
         formValido=false;
     }
 
-    //Validar Prazo de Finalização
-    if(prazo === ""){
-        mostrarErro(campoPrazo,erroPrazo,"Escolha um prazo de finalização para a demanda.");
+    //Validar Prazo de Finalização (opcional: pode ser definido agora ou depois, item 2.2.5)
+    // O campo de data fica vazio se o texto digitado não for uma data completa
+    if(prazo === "" && campoPrazo.validity.badInput){
+        mostrarErro(campoPrazo,erroPrazo,"Data incompleta. Preencha o dia, o mês e o ano ou deixe o prazo em branco.");
         formValido=false;
-    }else{
-        // Data de hoje no mesmo formato do campo (AAAA-MM-DD) para poder comparar
-        const hoje = new Date();
-        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-        const dia = String(hoje.getDate()).padStart(2, "0");
-        const hojeTexto = `${hoje.getFullYear()}-${mes}-${dia}`;
-
-        if(prazo < hojeTexto){
-            mostrarErro(campoPrazo,erroPrazo,"Escolha um prazo a partir de hoje.");
-            formValido=false;
-        }
+    }else if(prazo !== "" && prazo < dataDeHoje()){
+        mostrarErro(campoPrazo,erroPrazo,"Escolha um prazo a partir de hoje.");
+        formValido=false;
     }
+    // Obs: se a data é feriado nacional quem verifica é a API (consultando a BrasilAPI)
 
     if(!formValido){
         return;
     }
 
     //Validar usuário logado (ele é o solicitante da demanda)
-    const idSolicitante = pegarIdUsuarioLogado();
-
-    if(idSolicitante === null){
+    if(usuarioLogado === null){
         mostrarResultado(false, "Você precisa fazer login para cadastrar uma demanda.");
         return;
     }
 
-    // Monta o objeto que vai para a API (o servidor define o status e as datas)
+    // Monta o objeto que vai para a API (o servidor define o status "Aberta" e as datas)
     const novaDemanda = {
         titulo: titulo,
         descricao: descricao,
@@ -255,9 +340,13 @@ formulario.addEventListener("submit", async function(event){
         prioridade: prioridade,
         idProjeto: Number(projeto),
         idResponsavel: responsavel === "" ? null : Number(responsavel),
-        idSolicitante: idSolicitante,
-        prazo: prazo
+        idSolicitante: usuarioLogado.id,
+        prazo: prazo === "" ? null : prazo
     };
+
+    // Desativa o botão enquanto envia, para não cadastrar a mesma demanda duas vezes
+    botaoCadastrar.disabled = true;
+    botaoCadastrar.textContent = "Cadastrando...";
 
     try {
         // Envia para a API (POST /demandas), que grava no banco de dados
@@ -267,19 +356,23 @@ formulario.addEventListener("submit", async function(event){
             body: JSON.stringify(novaDemanda)
         });
 
-        const resultado = await resposta.json();
+        const resultado = await lerJson(resposta);
 
         if(resposta.status === 201){
-            mostrarResultado(true, `Demanda nº ${resultado.id} cadastrada com sucesso no projeto ${resultado.nomeProjeto}!`);
+            mostrarSucesso(resultado);
             formulario.reset();
             preencherSelect(campoResponsavel, [], "Escolha o projeto primeiro");
-        }else if(resultado.erros){
+        }else if(Array.isArray(resultado.erros)){
             // 400: a API devolve a lista de erros de validação
-            mostrarResultado(false, resultado.erros);
+            mostrarErrosDaApi(resultado.erros);
         }else{
-            mostrarResultado(false, resultado.erro || "Não foi possível cadastrar a demanda.");
+            // 401, 403, 500, 503...: a API devolve uma mensagem de erro
+            mostrarResultado(false, resultado.erro || `Não foi possível cadastrar a demanda (erro ${resposta.status}).`);
         }
     } catch (erro) {
         mostrarResultado(false, "Não foi possível conectar à API. Verifique se o servidor está ligado (npm start).");
+    } finally {
+        botaoCadastrar.disabled = false;
+        botaoCadastrar.textContent = "Cadastrar Demanda";
     }
 });

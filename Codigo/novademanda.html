@@ -32,18 +32,22 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-xl-9">
                         <h2 class="mb-2">Nova Demanda</h2>
+
+                        <!-- Aviso mostrado no lugar do formulário quando o perfil do usuário não pode cadastrar demandas -->
+                        <div id="avisoPermissao" class="alert alert-warning d-none"></div>
+
                         <form id="formDemanda" class="card shadow-sm" novalidate>
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-12">
                                         <label for="titulo" class="form-label">Título*</label>
-                                        <input id="titulo" class="form-control" type="text" autocomplete="titulo">
+                                        <input id="titulo" class="form-control" type="text" maxlength="150" autocomplete="off">
                                         <div id="erroTitulo" class="invalid-feedback"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="descricao" class="form-label">Descrição*</label>
-                                        <textarea class="form-control" id="descricao" rows="3"></textarea>
+                                        <textarea class="form-control" id="descricao" rows="3" maxlength="2000"></textarea>
                                         <div id="erroDescricao" class="invalid-feedback"></div>
                                     </div>
 
@@ -90,8 +94,9 @@
                                     </div>
 
                                     <div class="col-12 col-md-4">
-                                        <label for="prazo" class="form-label">Prazo de Finalização*</label>
-                                        <input id="prazo" class="form-control" type="date" required>
+                                        <label for="prazo" class="form-label">Prazo de Finalização</label>
+                                        <!-- Opcional: pode ser definido agora ou depois (não pode ser data passada nem feriado nacional) -->
+                                        <input id="prazo" class="form-control" type="date">
                                         <div id="erroPrazo" class="invalid-feedback"></div>
                                     </div>
                                 </div>
