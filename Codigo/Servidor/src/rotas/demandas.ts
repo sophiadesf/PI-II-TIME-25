@@ -7,8 +7,13 @@
 import { Router, Request, Response } from "express";
 import oracledb from "oracledb";
 import { getConn } from "../db";
+import { buscarFeriado, ErroApiFeriados } from "../feriados";
 
 const rotasDemandas = Router();
+
+// Perfis gravados no banco (SEM acento, por causa da regra CHECK da tabela USUARIOS)
+const PERFIL_ADMINISTRADOR = "Administrador";
+const PERFIL_LIDER = "Lider de Projeto";
 
 // Valores aceitos pelo banco (SEM acento, por causa das regras CHECK da tabela DEMANDAS)
 const tiposValidos = ["Tarefa", "Defeito", "Melhoria", "Documentacao"];
@@ -66,6 +71,15 @@ function prazoValido(prazo: any): boolean {
     const data = new Date(ano, mes - 1, dia);
 
     return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
+}
+
+// Devolve a data de hoje no formato AAAA-MM-DD (o mesmo do prazo, para poder comparar os textos)
+function dataDeHoje(): string {
+    const hoje = new Date();
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoje.getDate()).padStart(2, "0");
+
+    return `${hoje.getFullYear()}-${mes}-${dia}`;
 }
 
 // POST /demandas - cadastra uma nova demanda no banco de dados
@@ -148,6 +162,8 @@ rotasDemandas.post("/", async (req: Request, res: Response) => {
     if (foiInformado(prazo)) {
         if (!prazoValido(prazo)) {
             erros.push("Prazo inválido. Use o formato AAAA-MM-DD com uma data que exista.");
+        } else if (prazo < dataDeHoje()) {
+            erros.push("O prazo de finalização não pode ser uma data que já passou.");
         } else {
             prazoFinal = prazo;
         }
@@ -159,12 +175,56 @@ rotasDemandas.post("/", async (req: Request, res: Response) => {
         return;
     }
 
+    //Validar se o prazo cai em feriado nacional (consulta a API externa BrasilAPI)
+    if (prazoFinal !== null) {
+        try {
+            const feriado = await buscarFeriado(prazoFinal);
+
+            if (feriado !== null) {
+                res.status(400).json({
+                    erros: [`O prazo de finalização não pode ser em um feriado nacional (${feriado}). Escolha outra data.`]
+                });
+                return;
+            }
+        } catch (erro) {
+            // Se a API externa estiver fora do ar, não deixa gravar um prazo sem verificar
+            if (erro instanceof ErroApiFeriados) {
+                console.error("Erro ao consultar feriados:", erro.message);
+                res.status(503).json({
+                    erro: "Não foi possível verificar se o prazo é feriado nacional agora. Tente novamente em instantes ou cadastre sem prazo."
+                });
+                return;
+            }
+
+            throw erro;
+        }
+    }
+
     // ---------- 2ª parte: validações e cadastro no banco ----------
     let conexao;
 
     try {
         // Pega uma conexão emprestada do pool
         conexao = await getConn();
+
+        //Validar se o solicitante existe, está ativo e tem permissão para cadastrar demandas
+        const solicitante = await conexao.execute<{ PERFIL: string }>(
+            `SELECT PERFIL FROM USUARIOS WHERE ID_USUARIO = :id AND ATIVO = 'S'`,
+            { id: idSolicitante }
+        );
+
+        if (!solicitante.rows || solicitante.rows.length === 0) {
+            res.status(401).json({ erro: "Usuário não encontrado. Faça login novamente para cadastrar a demanda." });
+            return;
+        }
+
+        const perfil = solicitante.rows[0].PERFIL;
+
+        // Pelo Documento de Visão (item 2.1), só Administrador e Líder de Projeto criam demandas
+        if (perfil !== PERFIL_ADMINISTRADOR && perfil !== PERFIL_LIDER) {
+            res.status(403).json({ erro: "Seu perfil não tem permissão para cadastrar demandas. Apenas Administradores e Líderes de Projeto podem cadastrar." });
+            return;
+        }
 
         //Validar se o projeto existe e está ativo
         const projeto = await conexao.execute(
@@ -173,17 +233,21 @@ rotasDemandas.post("/", async (req: Request, res: Response) => {
         );
 
         if (!projeto.rows || projeto.rows.length === 0) {
-            erros.push("O projeto informado não existe.");
+            res.status(400).json({ erros: ["O projeto informado não existe."] });
+            return;
         }
 
-        //Validar se o solicitante existe e está ativo
-        const solicitante = await conexao.execute(
-            `SELECT ID_USUARIO FROM USUARIOS WHERE ID_USUARIO = :id AND ATIVO = 'S'`,
-            { id: idSolicitante }
-        );
+        // O Líder de Projeto só pode cadastrar demandas nos projetos aos quais está vinculado
+        if (perfil === PERFIL_LIDER) {
+            const vinculado = await conexao.execute(
+                `SELECT ID_USUARIO FROM PROJETO_USUARIO WHERE ID_PROJETO = :idProjeto AND ID_USUARIO = :idUsuario`,
+                { idProjeto: idProjeto, idUsuario: idSolicitante }
+            );
 
-        if (!solicitante.rows || solicitante.rows.length === 0) {
-            erros.push("O solicitante informado não existe.");
+            if (!vinculado.rows || vinculado.rows.length === 0) {
+                res.status(403).json({ erro: "Você só pode cadastrar demandas nos projetos aos quais está vinculado." });
+                return;
+            }
         }
 
         //Validar se o responsável existe e participa do projeto

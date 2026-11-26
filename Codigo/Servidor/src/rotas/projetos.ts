@@ -10,20 +10,62 @@ import { getConn } from "../db";
 const rotasProjetos = Router();
 
 // GET /projetos - lista os projetos ativos cadastrados no banco
+// Filtro opcional: GET /projetos?idUsuario=2 devolve só os projetos que esse usuário pode ver
+// (o Administrador vê todos; Líder de Projeto e Membro da Equipe só os projetos aos quais estão vinculados)
 rotasProjetos.get("/", async (req: Request, res: Response) => {
+    const idUsuarioTexto = req.query.idUsuario;
+    let idUsuario: number | null = null;
+
+    //Validar id do usuário (só se ele foi enviado)
+    if (idUsuarioTexto !== undefined) {
+        idUsuario = Number(idUsuarioTexto);
+
+        if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+            res.status(400).json({ erro: "O id do usuário deve ser um número inteiro." });
+            return;
+        }
+    }
+
     let conexao;
 
     try {
         // Pega uma conexão emprestada do pool
         conexao = await getConn();
 
+        // Por padrão (sem filtro ou para o Administrador) lista todos os projetos ativos
+        let somenteVinculados = false;
+
+        if (idUsuario !== null) {
+            const usuario = await conexao.execute<{ PERFIL: string }>(
+                `SELECT PERFIL FROM USUARIOS WHERE ID_USUARIO = :id AND ATIVO = 'S'`,
+                { id: idUsuario }
+            );
+
+            if (!usuario.rows || usuario.rows.length === 0) {
+                res.status(404).json({ erro: "Usuário não encontrado." });
+                return;
+            }
+
+            somenteVinculados = usuario.rows[0].PERFIL !== "Administrador";
+        }
+
         // Os apelidos entre aspas ("id", "nome") fazem o JSON sair com esses nomes
-        const resultado = await conexao.execute(
-            `SELECT ID_PROJETO AS "id", NOME AS "nome", DESCRICAO AS "descricao"
-               FROM PROJETOS
-              WHERE ATIVO = 'S'
-              ORDER BY NOME`
-        );
+        const resultado = somenteVinculados
+            ? await conexao.execute(
+                `SELECT P.ID_PROJETO AS "id", P.NOME AS "nome", P.DESCRICAO AS "descricao"
+                   FROM PROJETOS P
+                   JOIN PROJETO_USUARIO PU ON PU.ID_PROJETO = P.ID_PROJETO
+                  WHERE P.ATIVO = 'S'
+                    AND PU.ID_USUARIO = :idUsuario
+                  ORDER BY P.NOME`,
+                { idUsuario: idUsuario }
+            )
+            : await conexao.execute(
+                `SELECT ID_PROJETO AS "id", NOME AS "nome", DESCRICAO AS "descricao"
+                   FROM PROJETOS
+                  WHERE ATIVO = 'S'
+                  ORDER BY NOME`
+            );
 
         res.status(200).json(resultado.rows);
     } catch (erro) {
